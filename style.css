@@ -95,6 +95,7 @@ body {
 /* Abas de jogos */
 .games {
   min-width: 0;
+  margin: 0 auto;                /* centralizado entre o logo e as fichas */
   display: flex;
   gap: 3px;
   padding: 4px;
@@ -145,7 +146,7 @@ body {
 /* Carteira (fichas) */
 .wallet {
   position: relative;
-  margin-left: auto;
+  margin-left: 0;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1068,6 +1069,7 @@ body {
   .site-header-inner { flex-wrap: wrap; gap: 10px 14px; padding: 8px 14px; }
   .games { order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; }
   .games::-webkit-scrollbar { display: none; }
+  .wallet { margin-left: auto; }
   .table-bar { flex-wrap: wrap; }
   .tb-stats { margin-left: 0; order: 3; width: 100%; }
   .stat.level { flex: 1; }
