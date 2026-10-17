@@ -251,10 +251,10 @@
     if (!host) return;
     const active = document.body.dataset.game;
     const tabs = GAMES.map(g => {
-      const inner = `<svg><use href="#${g.icon}"/></svg>${g.name}`;
+      const inner = `<svg><use href="#${g.icon}"/></svg><span>${g.name}</span>`;
       if (!g.href) return `<button class="game-tab soon" type="button" data-game="${g.name}" title="Em breve">${inner}<span class="soon-tag">Em breve</span></button>`;
       const on = g.id === active;
-      return `<a class="game-tab${on ? ' active' : ''}" href="${g.href}"${on ? ' aria-current="page"' : ''}>${inner}</a>`;
+      return `<a class="game-tab${on ? ' active' : ''}" href="${g.href}"${on ? ' aria-current="page"' : ''} title="${g.name}">${inner}</a>`;
     }).join('');
 
     host.innerHTML = `
