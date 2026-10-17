@@ -124,6 +124,18 @@
 .pc-banner-zone { position: absolute; inset: 0; z-index: 3000; display: flex; align-items: center; justify-content: flex-start; pointer-events: none; }
 .pc-banner-zone .banner { position: relative; left: 50%; top: auto; bottom: auto; pointer-events: auto; }
 
+/* ---------- Recordes ---------- */
+.pc-records { margin-top: 18px; padding: 12px 14px 14px; border-radius: 18px; background: linear-gradient(180deg, var(--surface-2), var(--surface)); border: 1px solid rgba(255, 201, 64, .3); }
+.pc-records h2 { margin: 0 0 10px; display: flex; align-items: center; gap: 8px; font: 700 12px var(--ui); letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+.pc-records h2 svg { width: 16px; height: 16px; }
+.pc-rec-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.pc-rec { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 8px; border-radius: 12px; background: rgba(0, 0, 0, .25); border: 1px solid var(--line); text-align: center; }
+.pc-rec span { font: 800 10.5px var(--ui); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.pc-rec b { font: 400 22px var(--display); letter-spacing: .02em; color: #fff; font-variant-numeric: tabular-nums; }
+.pc-rec small { font-size: 11.5px; font-weight: 600; color: var(--muted); }
+@media (max-width: 900px) { .pc-rec-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .pc-rec-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pc-rec b { font-size: 19px; } }
+
 .pc-help { margin: 14px 0 0; text-align: center; font-size: 12.5px; color: var(--muted); }
 .pc-help kbd { padding: 1px 6px; border-radius: 5px; background: rgba(255, 255, 255, .08); border: 1px solid var(--line); font: 700 11px var(--ui); }
 

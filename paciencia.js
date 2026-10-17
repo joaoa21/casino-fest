@@ -31,7 +31,8 @@
 
   let G = null;          // partida
   let prefs = { mode: 'classic', draw: 1, stake: 1 };
-  let stats = { played: 0, won: 0, best: 0 };
+  // recordes (ficam salvos no navegador): best = melhor tempo em segundos
+  let stats = { played: 0, won: 0, best: 0, bestScore: 0, bestMoves: 0, bestVegas: 0, streak: 0, bestStreak: 0 };
   const el = {};
   const geo = {};        // medidas da mesa
   let drag = null;
@@ -313,7 +314,7 @@
       }
     }
     if (foundCount() === 52 && !G.won) win();
-    else if (!fromUndo && vegas() && !G.over && !findHint()) G.over = true;
+    else if (!fromUndo && vegas() && !G.over && !findHint()) { G.over = true; loseStreak(); }
     save();
     render();
   }
@@ -323,15 +324,44 @@
     const bonus = !vegas() && G.secs >= 30 ? Math.round(700000 / G.secs) : 0;
     G.score += bonus;
     stats.won++;
-    if (!stats.best || G.secs < stats.best) stats.best = G.secs;
-    saveStats();
+    stats.streak++;
+    if (stats.played < stats.won) stats.played = stats.won;   // partida restaurada de um save antigo
     const net = G.paidCards * G.stake * VEGAS_PAY - buyIn();
+    // recordes batidos nesta partida
+    const beaten = [];
+    if (!stats.best || G.secs < stats.best) { stats.best = G.secs; beaten.push('tempo'); }
+    if (!stats.bestMoves || G.moves < stats.bestMoves) { stats.bestMoves = G.moves; beaten.push('jogadas'); }
+    if (!vegas() && G.score > stats.bestScore) { stats.bestScore = G.score; beaten.push('pontos'); }
+    if (vegas() && net > stats.bestVegas) { stats.bestVegas = net; beaten.push('ganho no Vegas'); }
+    if (stats.streak > stats.bestStreak) { stats.bestStreak = stats.streak; if (stats.streak > 1) beaten.push('sequência'); }
+    saveStats();
+    const detail = `Tempo ${clock(G.secs)} · ${G.moves} jogadas`;
     G.banner = {
-      kicker: `Tempo ${clock(G.secs)} · ${G.moves} jogadas`,
-      title: 'Paciência completa!',
+      kicker: beaten.length ? `Novo recorde: ${beaten.join(', ')}!` : detail,
+      title: beaten.length ? 'Recorde!' : 'Paciência completa!',
       amount: vegas() ? '+' + fmt(net) : `${G.score.toLocaleString('pt-BR')} pontos`,
     };
+    if (beaten.length) setTimeout(() => toast(`${detail} · recorde de ${beaten.join(', ')} salvo.`), 600);
     setTimeout(cascade, 350);
+  }
+  // partida perdida (abandonada ou sem jogadas no Vegas): zera a sequência
+  function loseStreak() {
+    if (!stats.streak) return;
+    stats.streak = 0;
+    saveStats();
+  }
+  const pct = (a, b) => (b ? `${Math.round((a / b) * 100)}%` : '–');
+
+  function renderRecords() {
+    const tiles = [
+      ['Vitórias', stats.played ? `${stats.won} de ${stats.played}` : '–', stats.played ? pct(stats.won, stats.played) : 'nenhuma partida'],
+      ['Melhor tempo', stats.best ? clock(stats.best) : '–', 'partida completa'],
+      ['Menos jogadas', stats.bestMoves || '–', 'partida completa'],
+      ['Melhor pontuação', stats.bestScore ? stats.bestScore.toLocaleString('pt-BR') : '–', 'modo Clássico'],
+      ['Maior ganho', stats.bestVegas ? '+' + fmt(stats.bestVegas) : '–', 'modo Vegas'],
+      ['Sequência', stats.streak, `melhor: ${stats.bestStreak}`],
+    ];
+    el.records.innerHTML = tiles.map(([k, v, s]) => `<div class="pc-rec"><span>${k}</span><b>${v}</b><small>${s}</small></div>`).join('');
   }
 
   /* ---------------------------------------------------------
@@ -463,6 +493,7 @@
     el.btnHint.disabled = busy || G.won;
     el.btnFinish.hidden = !canFinish() || busy;
     showBanner(el.banner, G.won ? G.banner : null, false);
+    renderRecords();
     renderOptions();
     note(G.won ? '' : G.over ? `Fim das jogadas. Você recebeu ${fmt(G.paidCards * G.stake * VEGAS_PAY)} de ${fmt(buyIn())}. Comece um novo jogo.` : defaultNote());
   }
@@ -472,7 +503,7 @@
       const passes = VEGAS_RECYCLES[G.draw] + 1;
       return `Vegas · partida ${fmt(buyIn())} · cada carta nas pilhas paga ${fmt(G.stake * VEGAS_PAY)} · ${passes === 1 ? 'uma passada' : `${passes} passadas`} no monte`;
     }
-    return stats.won ? `Vitórias: ${stats.won} de ${stats.played}${stats.best ? ` · melhor tempo ${clock(stats.best)}` : ''}` : '';
+    return '';
   }
   function note(text) { el.note.textContent = text; }
 
@@ -590,6 +621,7 @@
       return toast(vegas() ? 'Clique de novo em Novo jogo para abandonar (a entrada desta partida não volta).' : 'Clique de novo em Novo jogo para abandonar esta partida.');
     }
     newArmed = 0;
+    if (G.started && !G.won && !G.over) loseStreak();
     stopCascade();
     G = newGame();
     save();
@@ -694,7 +726,7 @@
   --------------------------------------------------------- */
   function init() {
     Object.assign(el, {
-      board: $('#board'), note: $('#note'), banner: $('#banner'), cascade: $('#cascade'),
+      board: $('#board'), note: $('#note'), banner: $('#banner'), cascade: $('#cascade'), records: $('#records'),
       time: $('#info-time'), moves: $('#info-moves'), score: $('#info-score'), scoreLabel: $('#info-score-label'),
       optMode: $('#opt-mode'), optDraw: $('#opt-draw'), optStake: $('#opt-stake'),
       btnUndo: $('#btn-undo'), btnHint: $('#btn-hint'), btnNew: $('#btn-new'), btnFinish: $('#btn-finish'),
