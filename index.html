@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0817">
+  <title>Casino Fest | Início</title>
+  <meta name="description" content="Poker, blackjack, roleta, Bac Bo, paciência, slots e crash com fichas de brincadeira. Sem dinheiro de verdade, só diversão.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Casino Fest">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Casino Fest · cassino de brincadeira">
+  <meta property="og:description" content="Poker, blackjack, roleta, Bac Bo, paciência, slots e crash com fichas de brincadeira. Sem dinheiro de verdade, só diversão.">
+  <meta property="og:url" content="https://joaoa21.github.io/casino-fest/">
+  <meta property="og:image" content="https://joaoa21.github.io/casino-fest/lobby/space.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://joaoa21.github.io/casino-fest/">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lobby.css">
+  <link rel="preload" as="image" href="lobby/space.webp">
+</head>
+<body data-game="home">
+
+  <!-- Cabeçalho do cassino (montado pelo casino.js) -->
+  <header class="site-header"></header>
+  <script src="casino.js"></script>
+
+  <div class="app lobby">
+
+    <!-- ============ Destaque: o astronauta sai por cima do banner ============ -->
+    <section class="lb-hero hero-space" aria-labelledby="hero-title">
+      <div class="lb-hero-clip" aria-hidden="true"><img class="lb-hero-bg" src="lobby/space.webp" alt=""></div>
+      <div class="lb-hero-mults" aria-hidden="true">
+        <span style="left: 6%; bottom: 14%; --c: #19d3a2">1,85x</span>
+        <span style="left: 38%; bottom: 10%; --c: #ffc940; animation-delay: -1.2s">12,40x</span>
+        <span style="left: 3%; top: 9%; --c: #ff5fa2; animation-delay: -2.4s">250x</span>
+      </div>
+      <img class="lb-hero-astro" src="crash/astronauta.webp" alt="">
+      <div class="lb-hero-text">
+        <h1 id="hero-title"><small>Space</small>Fest</h1>
+        <a class="btn lb-cta" href="crash.html">Jogar agora</a>
+      </div>
+    </section>
+
+    <!-- ============ Categorias ============ -->
+    <nav class="home-cats" id="home-cats" aria-label="Categorias de jogos"></nav>
+
+    <!-- uma seção por categoria (montadas pelo home.js) -->
+    <div id="home-sections"></div>
+
+    <p class="lb-note">As fichas do Casino Fest são de brincadeira: não valem dinheiro e não podem ser compradas nem sacadas. Jogue pela diversão.</p>
+  </div>
+
+  <script src="home.js"></script>
+</body>
+</html>

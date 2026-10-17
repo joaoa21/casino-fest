@@ -1,0 +1,146 @@
+/* ==========================================================
+   Casino Fest — Paciência (usa a base de style.css)
+   ========================================================== */
+
+/* ---------- Opções ---------- */
+.pc-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 16px; }
+.pc-seg { display: inline-flex; padding: 4px; gap: 4px; border-radius: 14px; background: rgba(0, 0, 0, .28); border: 1px solid var(--line); }
+.pc-seg[hidden] { display: none; }
+.pc-seg button {
+  display: inline-flex; align-items: baseline; gap: 4px;
+  padding: 8px 14px;
+  border: 0; border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  font: 700 13.5px var(--ui);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.pc-seg button small { font-size: 11px; font-weight: 600; opacity: .8; }
+.pc-seg button:hover { color: #fff; }
+.pc-seg button.on { background: linear-gradient(180deg, #8b5cff, #6b2fe0); color: #fff; box-shadow: 0 2px 8px rgba(107, 47, 224, .5); }
+.pc-stake button.on { background: linear-gradient(180deg, var(--gold-2), var(--gold)); color: #2a1500; box-shadow: 0 2px 8px rgba(255, 201, 64, .4); }
+.pc-actions { display: flex; gap: 8px; margin-left: auto; }
+.pc-actions .btn-ghost:disabled { opacity: .4; cursor: not-allowed; }
+.btn.pc-new { padding: 10px 20px; background: linear-gradient(180deg, #ff6b9d, var(--pink) 50%, var(--pink-deep)); --btn-edge: #7d0a42; font: 400 17px var(--display); letter-spacing: .04em; }
+
+/* ---------- Mesa (feltro verde clássico com o trilho do cassino) ---------- */
+.pc-table {
+  position: relative;
+  isolation: isolate;          /* as camadas das cartas ficam dentro da mesa (a cascata passa por cima) */
+  padding: 22px 22px 18px;
+  border: 14px solid var(--rail-1);
+  border-radius: 34px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, .1), transparent 60%),
+    radial-gradient(ellipse at 50% 60%, #1b8a55, #0f6a3f 60%, #0a4a2c);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 201, 64, .35),
+    inset 0 0 90px rgba(0, 0, 0, .45),
+    0 0 0 2px #3e2550,
+    0 0 0 5px var(--rail-2),
+    0 0 0 7px rgba(255, 201, 64, .45),
+    0 40px 90px rgba(0, 0, 0, .55);
+}
+.pc-board { position: relative; min-height: 300px; user-select: none; -webkit-user-select: none; }
+
+/* lugares vazios */
+.pc-slot {
+  position: absolute;
+  width: var(--cw);
+  aspect-ratio: 5 / 7;
+  display: grid;
+  place-items: center;
+  border-radius: calc(var(--cw) * .09);
+  border: 2px dashed rgba(255, 255, 255, .22);
+  background: rgba(0, 0, 0, .12);
+  color: rgba(255, 255, 255, .25);
+  font: 400 calc(var(--cw) * .4) var(--display);
+}
+.pc-slot.found { border-style: solid; border-color: rgba(255, 201, 64, .35); color: rgba(255, 201, 64, .35); }
+.pc-slot.stock { cursor: pointer; }
+.pc-slot.stock svg { width: 46%; height: 46%; color: rgba(255, 255, 255, .45); }
+.pc-slot.stock.dead { cursor: default; }
+.pc-slot.stock.dead svg { opacity: .2; }
+
+/* cartas no estilo clássico da paciência: borda cinza e índice nos quatro cantos */
+.pc-card.card { border-radius: calc(var(--cw) * .065); box-shadow: 0 1px 3px rgba(0, 0, 0, .3); }
+.pc-card.card:not(.back) { border: max(1.5px, calc(var(--cw) * .02)) solid #4a4a4a; background: #fcfcfc; color: #111; }
+.pc-card.card.red { color: #e00000; }
+.pc-card.card.back { border: calc(var(--cw) * .05) solid #fdfcf8; box-shadow: 0 0 0 max(1.5px, calc(var(--cw) * .018)) #5a5a5a, 0 2px 5px rgba(0, 0, 0, .28); }
+.pc-card .c-tl, .pc-card .c-br, .pc-card .c-tr, .pc-card .c-bl {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(var(--cw) * .17);
+  gap: calc(var(--cw) * .02);
+  line-height: .82;
+  font-style: normal;
+  z-index: 1;
+}
+.pc-card .c-tl { top: 2.5%; left: 1.5%; }
+.pc-card .c-tr { top: 2.5%; right: 1.5%; }
+.pc-card .c-bl { bottom: 2.5%; left: 1.5%; transform: rotate(180deg); }
+.pc-card .c-br { bottom: 2.5%; right: 1.5%; }
+.pc-card .c-rank { font: 700 calc(var(--cw) * .21) Arial, Helvetica, sans-serif; letter-spacing: -.03em; transform: scaleX(.9); }
+.pc-card .c-rank.ten { font-size: calc(var(--cw) * .2); letter-spacing: -.12em; transform: scaleX(.74); margin-left: -.06em; }
+.pc-card .c-suit { width: calc(var(--cw) * .12); height: calc(var(--cw) * .12); }
+.pc-card .pip { width: calc(var(--cw) * .21); height: calc(var(--cw) * .21); }
+.pc-card .c-pips.dense .pip { width: calc(var(--cw) * .19); height: calc(var(--cw) * .19); }
+.pc-card .pip.ace { width: calc(var(--cw) * .5); height: calc(var(--cw) * .5); }
+.pc-card .c-court { left: 21%; right: 21%; width: 58%; top: 5%; bottom: 5%; height: 90%; }
+
+/* posição e movimento */
+.pc-card {
+  position: absolute;
+  cursor: grab;
+  touch-action: none;
+  transition: left .22s cubic-bezier(.3, .7, .4, 1), top .22s cubic-bezier(.3, .7, .4, 1), box-shadow .2s;
+}
+.pc-card.back { cursor: default; }
+.pc-card.buried { box-shadow: none; }   /* cartas embaixo de um monte: sem sombra acumulada */
+.pc-card.dragging { transition: none; cursor: grabbing; box-shadow: 0 16px 30px rgba(0, 0, 0, .5), 0 2px 4px rgba(0, 0, 0, .3); }
+.pc-board.instant .pc-card { transition: none !important; }
+.pc-card.pc-hint, .pc-slot.pc-hint { box-shadow: 0 0 0 3px var(--gold), 0 0 22px rgba(255, 201, 64, .9); }
+.pc-slot.pc-hint { border-color: var(--gold); }
+.pc-card.pc-nope { animation: pc-nope .32s ease; }
+@keyframes pc-nope { 25% { translate: -5px 0; } 50% { translate: 5px 0; } 75% { translate: -3px 0; } }
+
+.pc-note { min-height: 20px; margin-top: 6px; text-align: center; font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, .7); }
+.btn.pc-finish {
+  display: block;
+  margin: 10px auto 0;
+  min-width: min(320px, 100%);
+  background: linear-gradient(180deg, var(--gold-2), var(--gold) 50%, var(--gold-deep));
+  --btn-edge: #9a5a00;
+  color: #2a1500;
+  font: 400 18px var(--display);
+  letter-spacing: .04em;
+}
+.btn.pc-finish[hidden] { display: none; }
+
+/* faixa de vitória */
+.pc-banner-zone { position: absolute; inset: 0; z-index: 3000; display: flex; align-items: center; justify-content: flex-start; pointer-events: none; }
+.pc-banner-zone .banner { position: relative; left: 50%; top: auto; bottom: auto; pointer-events: auto; }
+
+.pc-help { margin: 14px 0 0; text-align: center; font-size: 12.5px; color: var(--muted); }
+.pc-help kbd { padding: 1px 6px; border-radius: 5px; background: rgba(255, 255, 255, .08); border: 1px solid var(--line); font: 700 11px var(--ui); }
+
+/* cascada de cartas da vitória */
+.pc-cascade { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 90; cursor: pointer; transition: opacity .6s; }
+.pc-cascade.fade { opacity: 0; pointer-events: none; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 720px) {
+  .pc-bar { gap: 8px; }
+  .pc-seg button { padding: 7px 10px; font-size: 12.5px; }
+  .pc-actions { width: 100%; margin-left: 0; }
+  .pc-actions > * { flex: 1; justify-content: center; }
+  .pc-table { border-width: 8px; border-radius: 20px; padding: 10px 6px 10px; }
+  .pc-slot { border-width: 1.5px; }
+  .pc-help { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc-card { transition: none; }
+}

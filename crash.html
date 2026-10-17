@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0817">
+  <title>Casino Fest | Space Fest</title>
+  <meta name="description" content="Crash: retire antes de o astronauta sumir no espaço. Paga até 10.000x. Fichas de brincadeira.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Casino Fest">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Space Fest · Casino Fest">
+  <meta property="og:description" content="Crash: retire antes de o astronauta sumir no espaço. Paga até 10.000x. Fichas de brincadeira.">
+  <meta property="og:url" content="https://joaoa21.github.io/casino-fest/crash.html">
+  <meta property="og:image" content="https://joaoa21.github.io/casino-fest/lobby/space.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://joaoa21.github.io/casino-fest/crash.html">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="crash.css">
+</head>
+<body data-game="crash">
+
+  <!-- Cabeçalho do cassino (montado pelo casino.js) -->
+  <header class="site-header"></header>
+  <script src="casino.js"></script>
+
+  <div class="app">
+
+    <!-- ============ Barra do jogo ============ -->
+    <section class="table-bar" aria-label="Informações do jogo">
+      <div class="tb-title">
+        <h1>Space Fest</h1>
+        <span class="tb-sub">Crash · retire antes de o astronauta sumir no espaço · <b class="tb-promo">paga até 10.000x</b></span>
+      </div>
+      <div class="tb-stats">
+        <div class="stat"><span class="stat-label">Rodadas</span><b id="info-rounds">0</b></div>
+        <div class="stat"><span class="stat-label">Seu maior</span><b id="info-best">–</b></div>
+        <div class="stat"><span class="stat-label">Resultado</span><b id="info-net">$0</b></div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <main class="play">
+        <!-- últimas rodadas -->
+        <div class="cr-history" aria-label="Últimas rodadas">
+          <span class="cr-history-label">Últimos</span>
+          <div class="cr-history-list" id="history"></div>
+        </div>
+
+        <!-- palco do astronauta -->
+        <section class="cr-stage" id="stage" aria-label="Voo do astronauta">
+          <canvas class="cr-canvas" id="canvas" aria-hidden="true"></canvas>
+          <!-- propaganda (canto de baixo: fora do caminho do astronauta) -->
+          <div class="cr-promo">
+            <svg aria-hidden="true"><use href="#i-crash"/></svg>
+            <span>Paga até</span>
+            <b>10.000x</b>
+          </div>
+          <div class="cr-rocket" id="rocket" aria-hidden="true"></div>
+          <div class="cr-boom" id="boom" aria-hidden="true" hidden></div>
+
+          <div class="cr-center">
+            <div class="cr-mult" id="mult">1,00x</div>
+            <div class="cr-sub" id="sub">Apostas abertas</div>
+            <div class="cr-countdown" id="countdown"><i id="countdown-fill"></i></div>
+          </div>
+
+          <div class="cr-cashout-pop" id="cashpop" hidden></div>
+        </section>
+
+        <!-- controles -->
+        <section class="controls cr-controls" id="controls">
+          <div class="status" id="status" aria-live="polite"></div>
+          <div class="cr-dock" id="bets"></div>
+          <button type="button" class="cr-add-bet" id="add-bet"><b>+ Aposta 2</b><small>aposte duas vezes na mesma rodada</small></button>
+        </section>
+      </main>
+
+      <aside class="cr-side">
+        <section class="cr-players">
+          <h2><svg><use href="#i-crash"/></svg>Na rodada <span id="players-count"></span></h2>
+          <ul class="cr-player-list" id="players"></ul>
+        </section>
+        <section class="log-wrap">
+          <h2><svg><use href="#i-history"/></svg>Seu histórico</h2>
+          <ul id="log" class="log"></ul>
+        </section>
+      </aside>
+    </div>
+
+  </div>
+
+  <script src="crash.js"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0817">
+  <title>Casino Fest | Roleta</title>
+  <meta name="description" content="Roleta europeia em 3D com um zero só. Número cheio paga 35:1. Fichas de brincadeira.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Casino Fest">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Roleta Europeia · Casino Fest">
+  <meta property="og:description" content="Roleta europeia em 3D com um zero só. Número cheio paga 35:1. Fichas de brincadeira.">
+  <meta property="og:url" content="https://joaoa21.github.io/casino-fest/roleta.html">
+  <meta property="og:image" content="https://joaoa21.github.io/casino-fest/lobby/roleta.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://joaoa21.github.io/casino-fest/roleta.html">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="roleta.css">
+  <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
+</head>
+<body data-game="roleta">
+
+  <!-- Cabeçalho do cassino (montado pelo casino.js) -->
+  <header class="site-header"></header>
+  <script src="casino.js"></script>
+
+  <div class="app">
+
+    <!-- ============ Barra da mesa ============ -->
+    <section class="table-bar" aria-label="Informações da mesa">
+      <div class="tb-title">
+        <h1>Roleta Europeia</h1>
+        <span class="tb-sub">Um zero só · Número cheio paga 35:1</span>
+      </div>
+      <div class="tb-stats">
+        <div class="stat"><span class="stat-label">Rodada</span><b id="info-round">0</b></div>
+        <div class="stat"><span class="stat-label">Na mesa</span><b id="info-staked">$0</b></div>
+        <div class="stat"><span class="stat-label">Resultado</span><b id="info-net">$0</b></div>
+        <div class="stat last-stat"><span class="stat-label">Último</span><b id="info-last">–</b></div>
+      </div>
+    </section>
+
+    <div class="layout rl-layout">
+      <main class="play">
+        <section class="rl-table" id="table" aria-label="Mesa de roleta">
+          <!-- roda -->
+          <div class="rl-wheel-wrap">
+            <div class="rl-wheel" id="wheel"></div>
+            <div class="rl-wheel3d" id="wheel3d" aria-hidden="true"></div>
+            <div class="rl-result" id="result-badge" hidden></div>
+          </div>
+
+          <div class="rl-side">
+            <!-- últimos números -->
+            <div class="rl-history" aria-label="Últimos números">
+              <span class="rl-history-label">Últimos</span>
+              <div class="rl-history-list" id="history"></div>
+            </div>
+
+            <!-- pano de apostas -->
+            <div class="rl-board-wrap">
+              <div class="rl-board" id="board" aria-label="Pano de apostas"></div>
+              <!-- faixa de resultado: aparece sobre o pano, sem cobrir a roda -->
+              <div class="rl-banner-zone">
+                <div class="banner" id="banner" hidden>
+                  <span class="banner-rays" aria-hidden="true"></span>
+                  <span class="banner-kicker"></span>
+                  <strong class="banner-title"></strong>
+                  <span class="banner-amount"><svg aria-hidden="true"><use href="#chip3d"/></svg><b></b></span>
+                </div>
+              </div>
+            </div>
+            <p class="rl-limits">Até $200 por número · até $1.000 nas apostas de fora · clique com o botão direito para tirar as fichas de uma casa</p>
+          </div>
+
+        </section>
+
+        <section class="controls" id="controls">
+          <div class="status" id="status" aria-live="polite"></div>
+          <div class="dock">
+            <div class="chip-tray rl-tray" id="chip-tray" role="radiogroup" aria-label="Valor da ficha"></div>
+            <div class="rl-row">
+              <button type="button" class="btn-ghost" id="btn-undo">Desfazer</button>
+              <button type="button" class="btn-ghost" id="btn-clear">Limpar</button>
+              <button type="button" class="btn-ghost" id="btn-double">2x</button>
+              <button type="button" class="btn-ghost" id="btn-repeat">Repetir</button>
+              <button type="button" class="btn deal" id="btn-spin"><span id="spin-label">Girar</span> <kbd>Enter</kbd></button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="log-wrap">
+        <h2><svg><use href="#i-history"/></svg>Histórico da mesa</h2>
+        <ul id="log" class="log"></ul>
+      </aside>
+    </div>
+
+  </div>
+
+  <script src="roleta.js"></script>
+  <!-- roda em 3D (se não carregar, a roda 2D continua) -->
+  <script type="module" src="roleta3d.js"></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0817">
+  <title>Casino Fest | Bac Bo</title>
+  <meta name="description" content="Dados no estilo bacará: Jogador ou Banca paga 1:1 e o empate paga até 88:1. Fichas de brincadeira.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Casino Fest">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Bac Bo · Casino Fest">
+  <meta property="og:description" content="Dados no estilo bacará: Jogador ou Banca paga 1:1 e o empate paga até 88:1. Fichas de brincadeira.">
+  <meta property="og:url" content="https://joaoa21.github.io/casino-fest/bacbo.html">
+  <meta property="og:image" content="https://joaoa21.github.io/casino-fest/lobby/bacbo.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://joaoa21.github.io/casino-fest/bacbo.html">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="bacbo.css">
+  <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "cannon-es": "https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js" } }</script>
+</head>
+<body data-game="bacbo">
+
+  <!-- Cabeçalho do cassino (montado pelo casino.js) -->
+  <header class="site-header"></header>
+  <script src="casino.js"></script>
+
+  <div class="app">
+
+    <!-- ============ Barra da mesa ============ -->
+    <section class="table-bar" aria-label="Informações da mesa">
+      <div class="tb-title">
+        <h1>Bac Bo</h1>
+        <span class="tb-sub">Dados no estilo bacará · Jogador ou Banca paga 1:1 · <b class="tb-promo">Empate paga até 88:1</b></span>
+      </div>
+      <div class="tb-stats">
+        <div class="stat"><span class="stat-label">Rodada</span><b id="info-round">0</b></div>
+        <div class="stat"><span class="stat-label">Na mesa</span><b id="info-staked">$0</b></div>
+        <div class="stat"><span class="stat-label">Resultado</span><b id="info-net">$0</b></div>
+      </div>
+    </section>
+
+    <!-- ============ Mesa ============ -->
+    <section class="bb-table" id="table" aria-label="Mesa de Bac Bo">
+      <!-- crupiê -->
+      <div class="bb-dealer">
+        <span class="avatar ring-dealer"><img src="avatars/dealer.webp" alt="" draggable="false"></span>
+        <div><b>Duda</b><small id="dealer-say">Façam suas apostas!</small></div>
+      </div>
+
+      <!-- placar compacto, acima dos dados -->
+      <section class="bb-road" aria-labelledby="road-title">
+        <div class="bb-road-head">
+          <h2 id="road-title"><svg><use href="#i-history"/></svg>Últimos resultados</h2>
+          <div class="bb-road-stats" id="road-stats"></div>
+        </div>
+        <div class="bb-beads" id="beads"></div>
+      </section>
+
+      <!-- os dois lados com os dados -->
+      <div class="bb-duel">
+        <div class="bb-side player" id="side-player">
+          <h2>Jogador</h2>
+          <div class="bb-shaker" id="shaker-player"></div>
+          <div class="bb-dice"><div class="die" id="die-p1"></div><div class="die" id="die-p2"></div></div>
+          <div class="bb-sum" id="sum-player">–</div>
+          <span class="bb-flag">Venceu!</span>
+        </div>
+        <div class="bb-vs" aria-hidden="true">VS</div>
+        <div class="bb-side banker" id="side-banker">
+          <h2>Banca</h2>
+          <div class="bb-shaker" id="shaker-banker"></div>
+          <div class="bb-dice"><div class="die" id="die-b1"></div><div class="die" id="die-b2"></div></div>
+          <div class="bb-sum" id="sum-banker">–</div>
+          <span class="bb-flag">Venceu!</span>
+        </div>
+        <!-- faixa de resultado (mesmo componente dos outros jogos) -->
+        <div class="bb-banner-zone">
+          <div class="banner" id="banner" hidden>
+            <span class="banner-rays" aria-hidden="true"></span>
+            <span class="banner-kicker"></span>
+            <strong class="banner-title"></strong>
+            <span class="banner-amount"><svg aria-hidden="true"><use href="#chip3d"/></svg><b></b></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- lançar, logo abaixo dos dados -->
+      <div class="bb-launch">
+        <button type="button" class="btn deal" id="btn-roll"><span id="roll-label">Lançar dados</span> <kbd>Enter</kbd></button>
+      </div>
+
+      <!-- apostas -->
+      <div class="bb-bets" id="bets" aria-label="Apostas">
+        <button type="button" class="bb-spot player" data-k="player"><b>Jogador</b><small>paga 1:1</small><span class="bb-stake"></span></button>
+        <button type="button" class="bb-spot tie" data-k="tie"><b>Empate</b><small>paga até 88:1</small><span class="bb-stake"></span></button>
+        <button type="button" class="bb-spot banker" data-k="banker"><b>Banca</b><small>paga 1:1</small><span class="bb-stake"></span></button>
+      </div>
+      <p class="bb-rules">Empate devolve 90% das apostas em Jogador e Banca · Empate paga: 2 ou 12 → 88:1 · 3 ou 11 → 25:1 · 4 ou 10 → 10:1 · 5 ou 9 → 6:1 · 6, 7 ou 8 → 4:1</p>
+    </section>
+
+    <!-- ============ Controles ============ -->
+    <section class="controls" id="controls">
+      <div class="status" id="status" aria-live="polite"></div>
+      <div class="dock">
+        <div class="chip-tray bb-tray" id="chip-tray" role="radiogroup" aria-label="Valor da ficha"></div>
+        <div class="bb-row">
+          <button type="button" class="btn-ghost" id="btn-undo">Desfazer</button>
+          <button type="button" class="btn-ghost" id="btn-clear">Limpar</button>
+          <button type="button" class="btn-ghost" id="btn-double">2x</button>
+          <button type="button" class="btn-ghost" id="btn-repeat">Repetir</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="log-wrap bb-log">
+      <h2><svg><use href="#i-history"/></svg>Histórico da mesa</h2>
+      <ul id="log" class="log"></ul>
+    </section>
+  </div>
+
+  <script src="bacbo.js"></script>
+  <script type="module" src="bacbo3d.js"></script>
+</body>
+</html>

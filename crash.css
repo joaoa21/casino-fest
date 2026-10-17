@@ -1,0 +1,399 @@
+/* ==========================================================
+   Casino Fest — Crash "Space Fest" (usa a base de style.css)
+   ========================================================== */
+
+/* ---------- Últimos estouros ---------- */
+.cr-history { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; min-height: 30px; }
+.cr-history-label { font: 800 10.5px var(--ui); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.cr-history-list { display: flex; gap: 6px; overflow: hidden; flex: 1; }
+.cr-hist {
+  flex: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font: 800 12.5px var(--ui);
+  font-variant-numeric: tabular-nums;
+  background: rgba(255, 255, 255, .07);
+  color: #cfc8ea;
+  border: 1px solid var(--line);
+}
+.cr-hist.mid { color: var(--teal); border-color: rgba(25, 211, 162, .4); background: rgba(25, 211, 162, .1); }
+.cr-hist.high { color: #2a1500; background: linear-gradient(180deg, var(--gold-2), var(--gold)); border-color: var(--gold); }
+.cr-hist.low { color: #ff8fab; border-color: rgba(255, 77, 94, .35); background: rgba(255, 77, 94, .08); }
+.cr-hist:first-child { box-shadow: 0 0 0 2px rgba(255, 255, 255, .25); }
+
+/* ---------- Palco ---------- */
+.cr-stage {
+  position: relative;
+  container-type: inline-size;
+  width: 100%;
+  aspect-ratio: 16 / 8.6;
+  max-height: calc(100vh - 360px);
+  min-height: 300px;
+  border-radius: 28px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 20% 100%, rgba(255, 61, 127, .25), transparent 55%),
+    radial-gradient(ellipse at 90% 0%, rgba(123, 77, 255, .35), transparent 50%),
+    linear-gradient(180deg, #1a0b3b, #0b0618);
+  border: 3px solid rgba(255, 201, 64, .6);
+  box-shadow: 0 0 0 6px #1a0b33, 0 0 0 8px rgba(255, 201, 64, .35), 0 30px 70px rgba(0, 0, 0, .55), inset 0 0 80px rgba(0, 0, 0, .5);
+}
+.cr-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* selo "Paga até 10.000x" */
+.cr-promo {
+  position: absolute;
+  right: 16px; bottom: 34px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 8px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #2a1452, #170a33);
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 0 3px rgba(255, 201, 64, .15), 0 0 22px rgba(255, 201, 64, .35), 0 6px 14px rgba(0, 0, 0, .45);
+  animation: promo-glow 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+.cr-promo svg { width: 26px; height: 26px; }
+.cr-promo span { font: 800 11px var(--ui); letter-spacing: .1em; text-transform: uppercase; color: #e4dcff; }
+.cr-promo b {
+  font: 400 20px 'Luckiest Guy', var(--display);
+  letter-spacing: .03em;
+  line-height: 1;
+  color: var(--gold);
+  -webkit-text-stroke: 1.5px #3d0f68;
+  paint-order: stroke fill;
+  text-shadow: 0 2px 0 #1c0736, 0 0 14px rgba(255, 201, 64, .6);
+}
+@keyframes promo-glow { 50% { box-shadow: 0 0 0 5px rgba(255, 201, 64, .22), 0 0 34px rgba(255, 201, 64, .6), 0 6px 14px rgba(0, 0, 0, .45); } }
+.tb-promo { color: var(--gold); font-weight: 800; }
+
+/* vela máxima: final dourado em vez de vermelho */
+.cr-stage.crashed.maxed .cr-mult { color: var(--gold); animation: none; text-shadow: 0 6px 0 #1c0736, 0 0 50px rgba(255, 201, 64, .8); }
+.cr-stage.crashed.maxed .cr-sub { background: linear-gradient(180deg, var(--gold-2), var(--gold)); color: #2a1500; }
+
+.cr-rocket {
+  position: absolute;
+  left: 0; top: 0;
+  width: clamp(60px, 9.5cqw, 100px);
+  aspect-ratio: 440 / 221;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 3;
+  will-change: transform;
+}
+.cr-rocket img { position: relative; display: block; width: 100%; height: 100%; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .5)); user-select: none; }
+/* chamas: saem dos dois bocais da mochila (o astronauta voa para a direita) */
+.cr-flame { position: absolute; width: 46%; height: 36%; transform: translateY(-50%); overflow: visible; filter: drop-shadow(0 0 10px rgba(255, 140, 40, .7)); }
+.cr-flame.f1 { right: 71%; top: 23%; }
+.cr-flame.f2 { right: 73%; top: 41%; }
+.cr-rocket .flame { transform-origin: 60px 20px; animation: flame .12s ease-in-out infinite alternate; }
+@keyframes flame { to { transform: scaleX(1.25) scaleY(.85); } }
+.cr-stage:not(.flying) .cr-rocket .flame { opacity: 0; }
+
+/* fim da rodada: o astronauta dispara para longe e some num clarão de estrelas */
+.cr-boom { position: absolute; width: 0; height: 0; pointer-events: none; z-index: 4; }
+.cr-boom > * { position: absolute; left: 0; top: 0; }
+.cr-flash {
+  width: 150px; height: 150px;
+  margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 10%, #fff3c4 18%, rgba(255, 201, 64, .7) 34%, rgba(167, 123, 255, .35) 52%, transparent 70%);
+  animation: cr-flash .6s ease-out forwards;
+}
+.cr-ring {
+  width: 40px; height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 14px rgba(255, 201, 64, .8);
+  animation: cr-ring .8s ease-out forwards;
+}
+.cr-ring.r2 { border-color: #ff5fa2; box-shadow: 0 0 14px rgba(255, 95, 162, .8); animation-delay: .12s; opacity: 0; }
+.cr-boom b {
+  width: 12px; height: 12px;
+  margin: -6px 0 0 -6px;
+  background: #fff3c4;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  filter: drop-shadow(0 0 4px #ffc940);
+  animation: cr-spark .75s ease-out forwards;
+}
+.cr-away {
+  width: clamp(60px, 9.5cqw, 100px);
+  height: auto;
+  translate: -50% -50%;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, .6));
+  animation: cr-away .9s cubic-bezier(.5, 0, .9, .4) forwards;
+}
+@keyframes cr-flash { from { transform: scale(.2); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+@keyframes cr-ring { 0% { transform: scale(.4); opacity: 1; } 100% { transform: scale(5); opacity: 0; } }
+@keyframes cr-spark { from { transform: rotate(var(--a)) translateX(0) scale(1.2); opacity: 1; } to { transform: rotate(var(--a)) translateX(var(--d)) scale(0); opacity: 0; } }
+@keyframes cr-away {
+  0% { transform: rotate(var(--ang)) translateX(0) scale(1); opacity: 1; }
+  100% { transform: rotate(var(--ang)) translateX(min(60vw, 520px)) rotate(540deg) scale(.08); opacity: 0; }
+}
+
+/* multiplicador central */
+.cr-center {
+  position: absolute;
+  left: 50%; top: 30%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+  pointer-events: none;
+  text-align: center;
+}
+.cr-mult {
+  font: 400 clamp(46px, 12cqw, 120px) 'Luckiest Guy', var(--display);
+  letter-spacing: .02em;
+  line-height: 1;
+  color: #fff;
+  -webkit-text-stroke: 3px #1c0736;
+  paint-order: stroke fill;
+  text-shadow: 0 6px 0 #1c0736, 0 0 40px rgba(255, 255, 255, .25);
+  font-variant-numeric: tabular-nums;
+  transition: color .2s;
+}
+.cr-mult.long { font-size: clamp(40px, 8.4cqw, 86px); }
+.cr-stage.flying .cr-mult { color: var(--gold); text-shadow: 0 6px 0 #1c0736, 0 0 40px rgba(255, 201, 64, .45); }
+.cr-stage.crashed .cr-mult { color: #ff5468; text-shadow: 0 6px 0 #1c0736, 0 0 40px rgba(255, 84, 104, .55); animation: shake .4s; }
+@keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+.cr-sub {
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .45);
+  font: 800 clamp(12px, 1.7cqw, 15px) var(--ui);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #e4dcff;
+}
+.cr-stage.crashed .cr-sub { background: rgba(255, 77, 94, .85); color: #fff; }
+.cr-countdown { width: clamp(140px, 24cqw, 240px); height: 6px; border-radius: 99px; background: rgba(255, 255, 255, .12); overflow: hidden; margin-top: 4px; }
+.cr-countdown i { display: block; height: 100%; width: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--pink), var(--gold)); }
+.cr-stage:not(.betting) .cr-countdown { visibility: hidden; }
+
+/* valor retirado subindo na tela */
+.cr-cashout-pop {
+  position: absolute;
+  left: 50%; top: 66%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 8px 18px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #3cf0c0, #12a87c);
+  box-shadow: 0 4px 0 #0a6a4f, 0 12px 24px rgba(0, 0, 0, .45);
+  color: #04261c;
+  font: 400 clamp(20px, 3.2cqw, 30px) 'Luckiest Guy', var(--display);
+  letter-spacing: .03em;
+  white-space: nowrap;
+  animation: pop-up 2.4s ease-out forwards;
+}
+@keyframes pop-up {
+  0% { opacity: 0; transform: translate(-50%, 20px) scale(.7); }
+  12% { opacity: 1; transform: translate(-50%, 0) scale(1.05); }
+  80% { opacity: 1; transform: translate(-50%, -16px); }
+  100% { opacity: 0; transform: translate(-50%, -30px); }
+}
+
+/* ---------- Controles ---------- */
+.cr-controls { container-type: inline-size; }
+.cr-dock { display: grid; gap: 14px; }
+.cr-dock.two { grid-template-columns: 1fr 1fr; }
+
+/* cada aposta é um cartão: valor | retirada automática | botão */
+.cr-bet {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.15fr;
+  grid-template-areas: "head head head" "body body btn";
+  gap: 12px 14px;
+  padding: 14px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .3);
+}
+.cr-bet[hidden] { display: none; }
+.cr-bet-head { grid-area: head; display: flex; align-items: center; justify-content: space-between; min-height: 26px; }
+.cr-dock:not(.two) .cr-bet-head { display: none; }
+.cr-bet-head b { font: 400 18px var(--display); letter-spacing: .03em; color: var(--gold); }
+.cr-bet[data-i="1"] .cr-bet-head b { color: #ff7ab3; }
+.cr-bet-remove { width: 30px; height: 30px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .08); color: var(--text); font: 700 20px / 1 var(--ui); cursor: pointer; }
+.cr-bet-remove:hover:not(:disabled) { background: rgba(255, 255, 255, .16); }
+.cr-bet-remove:disabled { opacity: .35; cursor: not-allowed; }
+.cr-bet-body { grid-area: body; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; min-width: 0; }
+.cr-bet .btn.cr-main { grid-area: btn; }
+/* duas apostas lado a lado: cada cartão empilha valor, retirada e botão */
+.cr-dock.two .cr-bet { grid-template-columns: 1fr; grid-template-areas: "head" "body" "btn"; }
+.cr-dock.two .btn.cr-main { min-height: 66px; }
+@container (max-width: 860px) {
+  .cr-dock.two { grid-template-columns: 1fr; }
+  .cr-dock.two .cr-bet { grid-template-columns: 1fr 1fr 1.15fr; grid-template-areas: "head head head" "body body btn"; }
+  .cr-dock.two .btn.cr-main { min-height: 92px; }
+}
+@container (max-width: 600px) {
+  .cr-bet, .cr-dock.two .cr-bet { grid-template-columns: 1fr; grid-template-areas: "head" "body" "btn"; padding: 12px; }
+  .cr-bet .btn.cr-main, .cr-dock.two .btn.cr-main { min-height: 64px; }
+}
+
+/* botão para abrir a segunda aposta */
+.cr-add-bet {
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 11px 14px;
+  border-radius: 14px;
+  border: 1.5px dashed rgba(255, 201, 64, .5);
+  background: rgba(255, 201, 64, .05);
+  color: var(--gold);
+  font: 800 15px var(--ui);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.cr-add-bet:hover { background: rgba(255, 201, 64, .12); border-color: var(--gold); }
+.cr-add-bet small { font-weight: 600; font-size: 13px; color: var(--muted); }
+.cr-add-bet[hidden] { display: none; }
+
+.cr-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+/* rótulos com a mesma altura: as duas colunas ficam alinhadas */
+.cr-label { min-height: 20px; display: flex; align-items: center; font: 800 10.5px var(--ui); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.cr-auto-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.cr-auto-toggle input { width: 16px; height: 16px; accent-color: var(--gold); }
+.cr-amount { display: flex; align-items: center; gap: 6px; padding: 4px; border-radius: 14px; background: rgba(0, 0, 0, .28); border: 1px solid var(--line-2); }
+.cr-amount input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--gold);
+  font: 800 20px var(--ui);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+.cr-amount input::-webkit-outer-spin-button, .cr-amount input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.cr-amount input:focus { outline: none; }
+.cr-amount:focus-within { border-color: var(--gold); }
+.cr-amount .sl-step { width: 40px; min-height: 40px; font-size: 16px; }
+.cr-x { font: 800 16px var(--ui); color: var(--muted); margin-left: -4px; }
+.cr-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.cr-quick button {
+  padding: 6px 0;
+  border-radius: 9px;
+  border: 1px solid var(--line-2);
+  background: rgba(255, 255, 255, .05);
+  color: var(--text);
+  font: 700 12.5px var(--ui);
+  cursor: pointer;
+}
+.cr-quick button:hover:not(:disabled) { background: rgba(255, 255, 255, .12); }
+.cr-field.off .cr-amount, .cr-field.off .cr-quick { opacity: .45; }
+.sl-step {
+  border: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .08);
+  color: var(--text);
+  font: 800 18px var(--ui);
+  cursor: pointer;
+}
+.sl-step:hover:not(:disabled) { background: rgba(255, 255, 255, .16); }
+.sl-step:disabled, .cr-quick button:disabled, .cr-amount input:disabled { opacity: .4; cursor: not-allowed; }
+
+/* botão principal muda conforme a fase */
+.btn.cr-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 92px;
+  font: 400 clamp(20px, 2.4vw, 26px) var(--display);
+  letter-spacing: .04em;
+  background: linear-gradient(180deg, #ff6b9d, var(--pink) 50%, var(--pink-deep));
+  --btn-edge: #7d0a42;
+}
+.btn.cr-main small { font: 800 13px var(--ui); letter-spacing: 0; opacity: .9; }
+.btn.cr-main small:empty { display: none; }
+.btn.cr-main.cashout {
+  background: linear-gradient(180deg, #4ff5c8, #12a87c);
+  --btn-edge: #0a6a4f;
+  color: #04261c;
+  animation: cash-pulse .9s ease-in-out infinite;
+}
+.btn.cr-main.cashout span { font-size: 1.15em; }
+@keyframes cash-pulse { 50% { box-shadow: 0 5px 0 var(--btn-edge), 0 0 0 6px rgba(25, 211, 162, .25), 0 10px 26px rgba(25, 211, 162, .45); } }
+.btn.cr-main.cancel { background: linear-gradient(180deg, #3a2f62, #2a2150); --btn-edge: #17112f; color: #e4dfff; }
+.btn.cr-main.waiting { background: linear-gradient(180deg, #a98bff, #6a3df0); --btn-edge: #3b1fa0; }
+
+/* ---------- Lateral: jogadores + histórico ---------- */
+.cr-side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 86px; }
+.cr-side .log-wrap { position: static; }
+.cr-side .log { max-height: 220px; }
+.cr-players { border-radius: 18px; background: linear-gradient(180deg, var(--surface-2), var(--surface)); border: 1px solid var(--line); overflow: hidden; }
+.cr-players h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 13px 16px 11px;
+  font: 700 12px var(--ui);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+.cr-players h2 svg { width: 18px; height: 18px; }
+.cr-players h2 span { margin-left: auto; text-transform: none; letter-spacing: 0; }
+.cr-player-list { list-style: none; margin: 0; padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 6px; }
+.cr-player {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px 6px 6px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .22);
+  border: 1px solid transparent;
+  transition: background .3s, border-color .3s;
+}
+.cr-player .avatar { width: 32px; height: 32px; box-shadow: 0 0 0 2px #120c26, 0 0 0 3.5px var(--a1); }
+.cr-player .pl-name { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+.cr-player .pl-name b { font-size: 13.5px; }
+.cr-player .pl-name small { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cr-player .pl-result { font: 800 13.5px var(--ui); font-variant-numeric: tabular-nums; text-align: right; color: var(--muted); }
+.cr-player.me { border-color: rgba(255, 201, 64, .45); }
+.cr-player.won { background: rgba(25, 211, 162, .12); border-color: rgba(25, 211, 162, .4); }
+.cr-player.won .pl-result { color: var(--teal); }
+.cr-player.lost .pl-result { color: #ff8fab; }
+.cr-player-empty { padding: 10px 8px; font-size: 13px; color: var(--muted); text-align: center; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1180px) {
+  .cr-side { position: static; width: min(760px, 100%); margin: 6px auto 0; }
+}
+@media (max-width: 720px) {
+  .cr-stage { aspect-ratio: 4 / 3.4; min-height: 0; max-height: none; border-radius: 20px; }
+  .cr-dock { gap: 10px; }
+  .cr-amount input { font-size: 17px; }
+  .cr-amount .sl-step { width: 34px; min-height: 36px; }
+  .cr-quick button { font-size: 11.5px; }
+  /* com duas apostas o painel fica alto: deixa de grudar no rodapé para não cobrir o palco */
+  .cr-controls:has(.cr-dock.two) { position: static; background: none; }
+  .cr-promo { right: 10px; bottom: 34px; padding: 3px 10px 3px 6px; gap: 6px; }
+  .cr-promo b { font-size: 15px; }
+  .cr-promo svg { width: 20px; height: 20px; }
+  .cr-promo span { font-size: 9.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cr-promo, .cr-rocket .flame, .btn.cr-main.cashout, .cr-stage.crashed .cr-mult, .cr-cashout-pop, .cr-boom > * { animation: none; }
+  .cr-away, .cr-ring, .cr-boom b { display: none; }
+}

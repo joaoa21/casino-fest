@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0817">
+  <title>Casino Fest | Slots</title>
+  <meta name="description" content="Rei da Fortuna, Rei da Folia, Coroa da Sorte e Sete Clássico: slots com bônus e multiplicadores. Fichas de brincadeira.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Casino Fest">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Slots · Casino Fest">
+  <meta property="og:description" content="Rei da Fortuna, Rei da Folia, Coroa da Sorte e Sete Clássico: slots com bônus e multiplicadores. Fichas de brincadeira.">
+  <meta property="og:url" content="https://joaoa21.github.io/casino-fest/slots.html">
+  <meta property="og:image" content="https://joaoa21.github.io/casino-fest/lobby/fortuna.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://joaoa21.github.io/casino-fest/slots.html">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lobby.css">
+  <link rel="preload" as="image" href="lobby/fortuna.webp">
+</head>
+<body data-game="slots">
+
+  <!-- Cabeçalho do cassino (montado pelo casino.js) -->
+  <header class="site-header"></header>
+  <script src="casino.js"></script>
+
+  <div class="app lobby">
+
+    <!-- ============ Destaque ============ -->
+    <section class="lb-hero" aria-labelledby="hero-title">
+      <div class="lb-hero-clip" aria-hidden="true"><img class="lb-hero-bg" src="lobby/fortuna.webp" alt=""></div>
+      <img class="lb-hero-king" src="folia/rei.webp" alt="">
+      <div class="lb-hero-text">
+        <h1 id="hero-title"><small>Rei da</small>Fortuna</h1>
+        <a class="btn lb-cta" href="fortuna.html">Jogar agora</a>
+      </div>
+    </section>
+
+    <!-- ============ Jogos ============ -->
+    <section class="lb-section" aria-labelledby="games-title">
+      <div class="lb-head">
+        <h2 id="games-title"><svg><use href="#i-slots"/></svg>Slots <span id="lb-count">4 jogos</span></h2>
+        <div class="lb-filters" role="group" aria-label="Filtrar jogos">
+          <button type="button" class="lb-filter" data-f="all" aria-pressed="true">Todos</button>
+          <button type="button" class="lb-filter" data-f="novo" aria-pressed="false">Novos</button>
+          <button type="button" class="lb-filter" data-f="rei" aria-pressed="false">Com o Rei</button>
+          <button type="button" class="lb-filter" data-f="compra" aria-pressed="false">Comprar bônus</button>
+          <button type="button" class="lb-filter" data-f="classico" aria-pressed="false">Clássicos</button>
+        </div>
+      </div>
+
+      <div class="lb-grid" id="lb-grid">
+        <a class="lb-card theme-fortuna" href="fortuna.html" data-tags="novo rei" data-game="fortuna">
+          <div class="lb-art"><img class="lb-bg" src="lobby/fortuna.webp" alt="" loading="lazy"><img class="lb-king" src="folia/rei.webp" alt="" loading="lazy"></div>
+          <span class="lb-badges"><b class="new">Novo</b><b>Bônus surpresa</b></span>
+          <span class="lb-max">até 2.500x</span>
+          <span class="lb-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+          <div class="lb-info">
+            <strong><span>Rei da</span> <span>Fortuna</span></strong>
+          </div>
+        </a>
+
+        <a class="lb-card theme-folia" href="folia.html" data-tags="novo rei compra" data-game="folia">
+          <div class="lb-art"><img class="lb-bg" src="lobby/folia.webp" alt="" loading="lazy"><img class="lb-king party" src="lobby/rei-folia.webp" alt="" loading="lazy"></div>
+          <span class="lb-badges"><b class="new">Novo</b><b>Multiplicadores</b></span>
+          <span class="lb-max">até 5.000x</span>
+          <span class="lb-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+          <div class="lb-info">
+            <strong><span>Rei da</span> <span>Folia</span></strong>
+          </div>
+        </a>
+
+        <a class="lb-card theme-coroa" href="maquinas.html?m=coroa" data-tags="compra classico" data-game="coroa">
+          <div class="lb-art"><img class="lb-bg" src="lobby/coroa.webp" alt="" loading="lazy"></div>
+          <span class="lb-badges"><b>Giros grátis x3</b></span>
+          <span class="lb-max">5 rolos</span>
+          <span class="lb-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+          <div class="lb-info">
+            <strong><span>Coroa da</span> <span>Sorte</span></strong>
+          </div>
+        </a>
+
+        <a class="lb-card theme-classico" href="maquinas.html?m=classico" data-tags="compra classico" data-game="classico">
+          <div class="lb-art"><img class="lb-bg" src="lobby/classico.webp" alt="" loading="lazy"></div>
+          <span class="lb-badges"><b>Roda da Fortuna</b></span>
+          <span class="lb-max">3 rolos</span>
+          <span class="lb-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+          <div class="lb-info">
+            <strong><span>Sete</span> <span>Clássico</span></strong>
+          </div>
+        </a>
+      </div>
+
+      <p class="lb-empty" id="lb-empty" hidden>Nenhum jogo nesse filtro.</p>
+    </section>
+
+    <p class="lb-note">As fichas do Casino Fest são de brincadeira: não valem dinheiro e não podem ser compradas nem sacadas. Jogue pela diversão.</p>
+  </div>
+
+  <script src="lobby.js"></script>
+</body>
+</html>

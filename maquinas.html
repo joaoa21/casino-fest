@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0817">
+  <title>Casino Fest | Slots</title>
+  <meta name="description" content="Slots de 5 e 3 rolos com giros grátis e Roda da Fortuna. Fichas de brincadeira.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Casino Fest">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Coroa da Sorte e Sete Clássico · Casino Fest">
+  <meta property="og:description" content="Slots de 5 e 3 rolos com giros grátis e Roda da Fortuna. Fichas de brincadeira.">
+  <meta property="og:url" content="https://joaoa21.github.io/casino-fest/maquinas.html">
+  <meta property="og:image" content="https://joaoa21.github.io/casino-fest/lobby/coroa.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://joaoa21.github.io/casino-fest/maquinas.html">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="slots.css">
+</head>
+<body data-game="slots">
+
+  <!-- Cabeçalho do cassino (montado pelo casino.js) -->
+  <header class="site-header"></header>
+  <script src="casino.js"></script>
+
+  <div class="app">
+
+    <!-- ============ Barra da máquina ============ -->
+    <section class="table-bar" aria-label="Informações da máquina">
+      <div class="tb-title">
+        <h1 id="m-title">Coroa da Sorte</h1>
+        <span class="tb-sub" id="m-sub">5 rolos · 10 linhas · com bônus</span>
+      </div>
+      <div class="tb-stats">
+        <div class="stat"><span class="stat-label">Giros</span><b id="info-spins">0</b></div>
+        <div class="stat"><span class="stat-label">Maior prêmio</span><b id="info-best">$0</b></div>
+        <div class="stat"><span class="stat-label">Resultado</span><b id="info-net">$0</b></div>
+      </div>
+    </section>
+
+    <!-- escolha da máquina -->
+    <nav class="sl-picker" id="picker" aria-label="Escolha a máquina"></nav>
+
+    <div class="layout">
+      <main class="play">
+        <section class="slot-machine" id="machine" aria-label="Máquina de slots">
+          <!-- letreiro com lâmpadas -->
+          <div class="sm-marquee">
+            <div class="sm-bulbs" id="bulbs" aria-hidden="true"></div>
+            <div class="sm-title">
+              <svg class="sm-crown" aria-hidden="true"><use href="#crown"/></svg>
+              <span id="m-marquee">Coroa da Sorte</span>
+            </div>
+            <div class="sm-bonusbar" id="bonusbar" hidden>
+              <span>Giros grátis</span><b id="bonus-count">0/10</b>
+              <span>Prêmios</span><b id="bonus-mult">x3</b>
+              <span>Bônus</span><b id="bonus-total">$0</b>
+            </div>
+          </div>
+
+          <!-- rolos -->
+          <div class="sm-window" id="window">
+            <div class="sm-reels" id="reels"></div>
+            <svg class="sm-paylines" id="paylines" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div class="sm-tags" id="tags" aria-hidden="true"></div>
+          </div>
+
+          <!-- visor de prêmio -->
+          <div class="sm-winbar" id="winbar" aria-live="polite">
+            <div class="wb-line" id="wb-line">
+              <span class="wb-icon" id="wb-icon"></span>
+              <span class="wb-text"><b id="wb-title">Boa sorte!</b><small id="wb-detail"></small></span>
+            </div>
+            <div class="wb-total" id="wb-total" hidden><span>Prêmio</span><b id="wb-amount">$0</b></div>
+          </div>
+
+          <!-- Roda da Fortuna (bônus da máquina clássica) -->
+          <div class="sm-wheel" id="wheel-bonus" hidden>
+            <span class="banner-rays" aria-hidden="true"></span>
+            <div class="wh-head">
+              <small>Roda da Fortuna</small>
+              <strong id="wheel-title">Gire a roda!</strong>
+            </div>
+            <div class="wh-wrap">
+              <div class="wh-disc" id="wheel-disc"></div>
+              <span class="wh-pointer" aria-hidden="true"></span>
+            </div>
+            <button type="button" class="btn deal wh-spin" id="wheel-spin">Girar a roda! <kbd>Espaço</kbd></button>
+          </div>
+
+          <!-- avisos grandes: prêmio grande, entrada e fim do bônus -->
+          <div class="sm-bigwin" id="bigwin" hidden>
+            <span class="banner-rays" aria-hidden="true"></span>
+            <small id="bigwin-kicker"></small>
+            <strong id="bigwin-title">Grande prêmio!</strong>
+            <b id="bigwin-amount">$0</b>
+            <em id="bigwin-hint">Toque para continuar</em>
+          </div>
+        </section>
+
+        <section class="controls" id="controls">
+          <div class="status" id="status" aria-live="polite"></div>
+          <div class="dock">
+            <div class="sl-row">
+              <div class="sl-bet" aria-label="Aposta por giro">
+                <button type="button" class="sl-step" id="bet-minus" aria-label="Diminuir aposta">−</button>
+                <div class="sl-bet-value"><span>Aposta</span><b id="bet-value">$10</b></div>
+                <button type="button" class="sl-step" id="bet-plus" aria-label="Aumentar aposta">+</button>
+              </div>
+              <button type="button" class="btn-ghost sl-toggle" id="btn-auto" aria-pressed="false" aria-haspopup="dialog" aria-expanded="false">Auto</button>
+              <button type="button" class="btn-ghost sl-toggle" id="btn-turbo" aria-pressed="false">Turbo</button>
+              <button type="button" class="btn sl-buy" id="btn-buy"><span>Comprar bônus</span><small id="buy-price">$630</small></button>
+              <button type="button" class="btn deal sl-spin" id="btn-spin"><span id="spin-label">Girar</span> <kbd>Espaço</kbd></button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="sl-side">
+        <!-- quanto paga: sempre visível, com os valores da aposta atual -->
+        <section class="sl-pays" aria-labelledby="pays-title">
+          <h2 id="pays-title"><svg><use href="#i-slots"/></svg>Quanto paga <span id="pays-bet">aposta $10</span></h2>
+          <div class="sl-pays-list" id="pays"></div>
+          <button type="button" class="sl-lines-btn" id="btn-lines">Ver as linhas de pagamento</button>
+        </section>
+        <section class="log-wrap">
+          <h2><svg><use href="#i-history"/></svg>Histórico da máquina</h2>
+          <ul id="log" class="log"></ul>
+        </section>
+      </aside>
+    </div>
+
+  </div>
+
+  <!-- linhas de pagamento -->
+  <dialog class="sl-dialog" id="lines-dialog" aria-labelledby="lines-title">
+    <div class="sl-dialog-head">
+      <h2 id="lines-title">Linhas de pagamento</h2>
+      <button type="button" class="sl-close" data-close aria-label="Fechar">×</button>
+    </div>
+    <p class="sl-dialog-sub">Os prêmios contam da esquerda para a direita, começando no primeiro rolo.</p>
+    <div class="pt-lines" id="pt-lines"></div>
+    <p class="sl-dialog-foot" id="lines-foot"></p>
+  </dialog>
+
+  <!-- comprar o bônus -->
+  <dialog class="sl-buy-dialog" id="buy-dialog" aria-labelledby="buy-title">
+    <button type="button" class="sl-close bd-close" data-close aria-label="Fechar">×</button>
+    <div class="bd-hero">
+      <span class="banner-rays" aria-hidden="true"></span>
+      <svg class="bd-star" viewBox="0 0 100 100" aria-hidden="true"><use id="bd-hero-use" href="#sym-star"/></svg>
+      <h2 id="buy-title">Comprar bônus</h2>
+      <p id="bd-hero-text">Entre direto nos giros grátis, sem esperar as 3 estrelas.</p>
+    </div>
+
+    <div class="bd-perks">
+      <div class="bd-perk"><b id="bd-spins">10</b><span id="bd-p1">giros grátis</span></div>
+      <div class="bd-perk"><b id="bd-mult">x3</b><span id="bd-p2">em todos os prêmios</span></div>
+      <div class="bd-perk"><svg viewBox="0 0 100 100" aria-hidden="true"><use id="bd-p3-use" href="#sym-crown"/></svg><span id="bd-p3">coroas extras nos rolos</span></div>
+    </div>
+
+    <div class="bd-price">
+      <div class="bd-bet">
+        <span>Aposta</span>
+        <div class="bd-stepper">
+          <button type="button" class="sl-step" id="bd-minus" aria-label="Diminuir aposta">−</button>
+          <b id="bd-bet">$10</b>
+          <button type="button" class="sl-step" id="bd-plus" aria-label="Aumentar aposta">+</button>
+        </div>
+      </div>
+      <div class="bd-cost">
+        <span>Preço do bônus</span>
+        <b id="bd-cost">$630</b>
+        <small id="bd-cost-x">63× a aposta</small>
+      </div>
+    </div>
+
+    <p class="bd-balance" id="bd-balance"></p>
+    <p class="bd-note">Em média o bônus devolve cerca de 96% do preço. Cada bônus é diferente: pode render bem mais ou bem menos.</p>
+
+    <div class="bd-actions">
+      <button type="button" class="btn fold" data-close>Agora não</button>
+      <button type="button" class="btn deal" id="buy-confirm">Comprar · $630</button>
+    </div>
+  </dialog>
+
+  <script src="slots-math.js"></script>
+  <script src="slots.js"></script>
+</body>
+</html>

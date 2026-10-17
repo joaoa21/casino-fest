@@ -1,0 +1,6 @@
+# sessão do editor / Claude Code
+.claude/
+# sistema
+.DS_Store
+Thumbs.db
+desktop.ini

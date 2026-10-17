@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0817">
+  <title>Casino Fest | Blackjack</title>
+  <meta name="description" content="Blackjack com 6 baralhos, seguro, dobrar e dividir. Blackjack paga 3:2. Fichas de brincadeira.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Casino Fest">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Blackjack · Casino Fest">
+  <meta property="og:description" content="Blackjack com 6 baralhos, seguro, dobrar e dividir. Blackjack paga 3:2. Fichas de brincadeira.">
+  <meta property="og:url" content="https://joaoa21.github.io/casino-fest/blackjack.html">
+  <meta property="og:image" content="https://joaoa21.github.io/casino-fest/lobby/blackjack.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://joaoa21.github.io/casino-fest/blackjack.html">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="blackjack.css">
+</head>
+<body data-game="blackjack">
+
+  <!-- Cabeçalho do cassino (montado pelo casino.js) -->
+  <header class="site-header"></header>
+  <script src="casino.js"></script>
+
+  <div class="app">
+
+    <!-- ============ Barra da mesa ============ -->
+    <section class="table-bar" aria-label="Informações da mesa">
+      <div class="tb-title">
+        <h1>Mesa Blackjack</h1>
+        <span class="tb-sub">6 baralhos · Blackjack paga 3:2 · Dealer para no 17</span>
+      </div>
+      <div class="tb-stats">
+        <div class="stat"><span class="stat-label">Rodada</span><b id="info-round">0</b></div>
+        <div class="stat"><span class="stat-label">Aposta</span><b>$5–$1.000</b></div>
+        <div class="stat"><span class="stat-label">Resultado</span><b id="info-net">$0</b></div>
+        <div class="stat level">
+          <span class="stat-label">Baralho</span>
+          <span class="level-bar"><i id="shoe-fill"></i></span>
+          <span class="level-next" id="info-shoe">312 cartas</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <main class="play">
+        <section class="bj-table" id="table" aria-label="Mesa de blackjack">
+          <!-- logo impressa no feltro (montada pelo blackjack.js) -->
+          <div class="felt-logo" id="felt-logo" aria-hidden="true"></div>
+
+          <!-- sapato e descarte -->
+          <div class="bj-shoe" id="shoe" title="Cartas que faltam sair (6 baralhos misturados)">
+            <span class="shoe-cards"><i class="card back"></i><i class="card back"></i></span>
+            <span class="shoe-count" id="shoe-count">312</span>
+          </div>
+          <div class="bj-discard" id="discard" aria-hidden="true"></div>
+
+          <!-- dealer -->
+          <div class="bj-dealer">
+            <div class="plate dealer-plate">
+              <span class="avatar ring-dealer"><img src="avatars/dealer.webp" alt="" draggable="false"></span>
+              <div class="who"><b class="name">Duda</b><span class="tag">Crupiê</span></div>
+            </div>
+            <div class="bj-hand" id="dealer-hand">
+              <div class="bj-cards" id="dealer-cards"></div>
+              <span class="bj-total" id="dealer-total" hidden></span>
+            </div>
+          </div>
+
+          <!-- mãos do jogador -->
+          <div class="bj-hands" id="hands"></div>
+
+          <!-- círculo de aposta -->
+          <div class="bet-spot" id="bet-spot">
+            <div class="bet-spot-chips" id="bet-spot-chips"></div>
+            <span class="bet-spot-label" id="bet-spot-label">Aposte aqui</span>
+          </div>
+
+          <!-- faixa de resultado (mesmo componente do pôquer) -->
+          <div class="banner" id="banner" hidden>
+            <span class="banner-rays" aria-hidden="true"></span>
+            <span class="banner-kicker"></span>
+            <strong class="banner-title"></strong>
+            <span class="banner-amount"><svg aria-hidden="true"><use href="#chip3d"/></svg><b></b></span>
+          </div>
+        </section>
+
+        <section class="controls" id="controls">
+          <div class="status" id="status" aria-live="polite"></div>
+
+          <div class="dock">
+            <!-- apostar -->
+            <div class="bj-panel" id="bet-panel">
+              <div class="chip-tray" id="chip-tray"></div>
+              <div class="bet-row">
+                <button type="button" class="btn-ghost" id="bet-clear">Limpar</button>
+                <button type="button" class="btn-ghost" id="bet-half">½</button>
+                <button type="button" class="btn-ghost" id="bet-double">2x</button>
+                <button type="button" class="btn deal" id="btn-deal"><span id="deal-label">Dar cartas</span> <kbd>Enter</kbd></button>
+              </div>
+            </div>
+
+            <!-- jogar -->
+            <div class="bj-panel actions bj-actions" id="play-panel" hidden>
+              <button type="button" class="btn hit" id="btn-hit"><span>Pedir</span> <kbd>H</kbd></button>
+              <button type="button" class="btn stand" id="btn-stand"><span>Parar</span> <kbd>S</kbd></button>
+              <button type="button" class="btn double" id="btn-double"><span>Dobrar</span> <kbd>D</kbd></button>
+              <button type="button" class="btn split" id="btn-split"><span>Dividir</span> <kbd>P</kbd></button>
+            </div>
+
+            <!-- seguro -->
+            <div class="bj-panel" id="ins-panel" hidden>
+              <p class="ins-text" id="ins-text"></p>
+              <div class="actions bj-two">
+                <button type="button" class="btn fold" id="btn-ins-no"><span>Sem seguro</span> <kbd>N</kbd></button>
+                <button type="button" class="btn raise" id="btn-ins-yes"><span id="ins-yes-label">Fazer seguro</span> <kbd>Y</kbd></button>
+              </div>
+            </div>
+
+            <!-- fim da rodada -->
+            <div class="bj-panel" id="done-panel" hidden>
+              <div class="actions bj-three">
+                <button type="button" class="btn fold" id="btn-change"><span>Nova aposta</span> <kbd>N</kbd></button>
+                <button type="button" class="btn raise" id="btn-rebet2"><span id="rebet2-label">Dobrar aposta</span> <kbd>2</kbd></button>
+                <button type="button" class="btn next" id="btn-rebet"><span id="rebet-label">Repetir aposta</span> <kbd>Enter</kbd></button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="log-wrap">
+        <h2><svg><use href="#i-history"/></svg>Histórico da mesa</h2>
+        <ul id="log" class="log"></ul>
+      </aside>
+    </div>
+
+  </div>
+
+  <script src="blackjack.js"></script>
+</body>
+</html>

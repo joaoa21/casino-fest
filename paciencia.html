@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0817">
+  <title>Casino Fest | Paciência</title>
+  <meta name="description" content="Paciência Klondike nos modos Clássico e Vegas, com dica, desfazer e a cascata de cartas na vitória.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Casino Fest">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Paciência · Casino Fest">
+  <meta property="og:description" content="Paciência Klondike nos modos Clássico e Vegas, com dica, desfazer e a cascata de cartas na vitória.">
+  <meta property="og:url" content="https://joaoa21.github.io/casino-fest/paciencia.html">
+  <meta property="og:image" content="https://joaoa21.github.io/casino-fest/lobby/paciencia.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://joaoa21.github.io/casino-fest/paciencia.html">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="paciencia.css">
+</head>
+<body data-game="paciencia">
+
+  <!-- Cabeçalho do cassino (montado pelo casino.js) -->
+  <header class="site-header"></header>
+  <script src="casino.js"></script>
+
+  <div class="app">
+
+    <!-- ============ Barra da mesa ============ -->
+    <section class="table-bar" aria-label="Informações da partida">
+      <div class="tb-title">
+        <h1>Paciência</h1>
+        <span class="tb-sub">Klondike · Monte as quatro pilhas do Ás ao Rei</span>
+      </div>
+      <div class="tb-stats">
+        <div class="stat"><span class="stat-label">Tempo</span><b id="info-time">0:00</b></div>
+        <div class="stat"><span class="stat-label">Jogadas</span><b id="info-moves">0</b></div>
+        <div class="stat"><span class="stat-label" id="info-score-label">Pontos</span><b id="info-score">0</b></div>
+      </div>
+    </section>
+
+    <!-- ============ Opções ============ -->
+    <section class="pc-bar" aria-label="Opções da partida">
+      <div class="pc-seg" role="radiogroup" aria-label="Modo" id="opt-mode">
+        <button type="button" data-v="classic" role="radio">Clássico</button>
+        <button type="button" data-v="vegas" role="radio">Vegas <small>com fichas</small></button>
+      </div>
+      <div class="pc-seg" role="radiogroup" aria-label="Cartas por compra" id="opt-draw">
+        <button type="button" data-v="1" role="radio">Comprar 1</button>
+        <button type="button" data-v="3" role="radio">Comprar 3</button>
+      </div>
+      <div class="pc-seg pc-stake" role="radiogroup" aria-label="Valor por carta" id="opt-stake"></div>
+      <div class="pc-actions">
+        <button type="button" class="btn-ghost" id="btn-undo"><svg><use href="#i-refresh"/></svg>Desfazer</button>
+        <button type="button" class="btn-ghost" id="btn-hint">Dica</button>
+        <button type="button" class="btn pc-new" id="btn-new">Novo jogo</button>
+      </div>
+    </section>
+
+    <!-- ============ Mesa ============ -->
+    <section class="pc-table" aria-label="Mesa de paciência">
+      <div class="pc-board" id="board"></div>
+      <div class="pc-note" id="note" aria-live="polite"></div>
+      <button type="button" class="btn pc-finish" id="btn-finish" hidden>Completar sozinho</button>
+      <!-- faixa de resultado (mesmo componente dos outros jogos) -->
+      <div class="pc-banner-zone">
+        <div class="banner" id="banner" hidden>
+          <span class="banner-rays" aria-hidden="true"></span>
+          <span class="banner-kicker"></span>
+          <strong class="banner-title"></strong>
+          <span class="banner-amount"><svg aria-hidden="true"><use href="#chip3d"/></svg><b></b></span>
+        </div>
+      </div>
+    </section>
+
+    <p class="pc-help">Arraste as cartas ou toque nelas para mover sozinho · Toque no monte para comprar · <kbd>Ctrl</kbd>+<kbd>Z</kbd> desfaz · <kbd>Espaço</kbd> compra</p>
+  </div>
+
+  <canvas class="pc-cascade" id="cascade" aria-hidden="true" hidden></canvas>
+  <script src="paciencia.js"></script>
+</body>
+</html>

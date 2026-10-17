@@ -1,0 +1,322 @@
+/* ==========================================================
+   Casino Fest — lobby dos slots (usa style.css)
+   ========================================================== */
+
+/* o rei e o cetro passam das bordas do banner: sem rolagem lateral na página */
+.lobby { overflow-x: clip; }
+
+/* ---------- Destaque: o rei sai por cima do banner ---------- */
+.lb-hero {
+  --king-out: 92px;                       /* quanto do rei passa da borda de cima */
+  position: relative;
+  margin-top: var(--king-out);
+  min-height: clamp(280px, 30vw, 360px);
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  align-items: center;
+  isolation: isolate;
+}
+.lb-hero-clip {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 201, 64, .55);
+  box-shadow: 0 0 0 5px rgba(5, 37, 20, .9), 0 24px 60px rgba(0, 0, 0, .55), 0 0 60px rgba(25, 211, 162, .18);
+}
+.lb-hero-bg { width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
+.lb-hero-clip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(3, 20, 11, 0) 30%, rgba(3, 20, 11, .45) 58%, rgba(3, 20, 11, .8) 100%);
+}
+/* o rei: passa do topo e é cortado só na base do banner */
+.lb-hero-king {
+  --cut: 30%;                             /* parte da imagem que fica abaixo do banner */
+  --keep: .7;                             /* 1 − corte, em número */
+  position: absolute;
+  left: 4%;
+  bottom: 0;
+  height: calc((100% + var(--king-out)) / var(--keep));
+  width: auto;
+  z-index: -1;
+  translate: 0 var(--cut);
+  clip-path: polygon(-50% -50%, 150% -50%, 150% calc(100% - var(--cut)), -50% calc(100% - var(--cut)));
+  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, .55));
+  pointer-events: none;
+}
+.lb-hero-astro {
+  position: absolute;
+  left: 9%;
+  top: 0;                                     /* inclinado, ele sai ~15% da largura acima do banner */
+  width: min(47%, 600px);
+  height: auto;
+  z-index: -1;
+  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, .55)) drop-shadow(0 0 30px rgba(199, 155, 255, .35));
+  animation: lb-fly 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes lb-fly { 0%, 100% { transform: rotate(-20deg) translate(0, 0); } 50% { transform: rotate(-20deg) translate(8px, -5px); } }
+.hero-space { --king-out: 100px; grid-template-columns: 1.15fr 1fr; }
+/* multiplicadores brilhando no caminho do rastro */
+.lb-hero-mults { position: absolute; inset: 0; z-index: -1; border-radius: 28px; overflow: hidden; pointer-events: none; }
+.lb-hero-mults span {
+  position: absolute;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font: 400 clamp(16px, 1.8vw, 24px) 'Luckiest Guy', var(--display);
+  letter-spacing: .03em;
+  color: #fff;
+  background: rgba(20, 6, 46, .72);
+  border: 2px solid var(--c, #19d3a2);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--c, #19d3a2) 60%, transparent);
+  animation: lb-mult 3.6s ease-in-out infinite;
+}
+@keyframes lb-mult { 50% { transform: translateY(-8px); } }
+.hero-space .lb-hero-clip { box-shadow: 0 0 0 5px rgba(24, 8, 52, .9), 0 24px 60px rgba(0, 0, 0, .55), 0 0 60px rgba(199, 155, 255, .25); }
+.hero-space .lb-hero-clip::after { background: linear-gradient(90deg, rgba(10, 4, 30, 0) 30%, rgba(10, 4, 30, .45) 58%, rgba(10, 4, 30, .8) 100%); }
+.hero-space h1 { color: #e9d8ff; -webkit-text-stroke-color: #2a0f5a; text-shadow: 0 8px 0 #2a0f5a, 0 0 46px rgba(199, 155, 255, .7); }
+
+.lb-hero-text {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 26px);
+  padding: 28px 24px;
+  text-align: center;
+}
+.lb-hero h1 {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font: 400 clamp(64px, 10.5vw, 136px) / .84 'Luckiest Guy', var(--display);
+  letter-spacing: .03em;
+  color: var(--gold);
+  -webkit-text-stroke: 4px #3d1a05;
+  paint-order: stroke fill;
+  text-shadow: 0 8px 0 #3d1a05, 0 0 46px rgba(255, 201, 64, .6);
+  transform: rotate(-3deg);
+}
+.lb-hero h1 small { font-size: .38em; color: #fff; -webkit-text-stroke: 3px #1c0736; text-shadow: 0 4px 0 #1c0736; }
+.lb-cta { padding: 16px 48px; text-decoration: none; color: #fff; background: linear-gradient(180deg, #ff6b9d, var(--pink) 50%, var(--pink-deep)); --btn-edge: #7d0a42; font: 400 clamp(20px, 2.2vw, 26px) var(--display); letter-spacing: .04em; }
+
+/* ---------- Seção e filtros ---------- */
+.lb-section { margin-top: 30px; }
+.lb-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+.lb-head h2 { margin: 0; display: flex; align-items: center; gap: 10px; font: 400 26px var(--display); letter-spacing: .03em; }
+.lb-head h2 svg { width: 28px; height: 28px; }
+.lb-head h2 span { font: 700 13px var(--ui); color: var(--muted); }
+.lb-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.lb-filter {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line-2);
+  background: rgba(255, 255, 255, .04);
+  color: var(--text);
+  font: 700 14px var(--ui);
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.lb-filter:hover { border-color: rgba(255, 201, 64, .6); }
+.lb-filter[aria-pressed="true"] { background: linear-gradient(180deg, var(--gold-2), var(--gold)); border-color: var(--gold); color: #2a1500; }
+
+/* ---------- Cards dos jogos ---------- */
+/* colunas fixas: com filtro (menos cards) o tamanho continua o mesmo */
+.lb-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 1200px) { .lb-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 900px) { .lb-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.lb-card {
+  --accent: #ffc940;
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  border-radius: 22px;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
+  text-decoration: none;
+  border: 2px solid rgba(255, 255, 255, .12);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, .45);
+  transition: transform .25s cubic-bezier(.3, 1.4, .5, 1), box-shadow .25s, border-color .25s;
+}
+.lb-card[hidden] { display: none; }
+.lb-card { container-type: inline-size; }
+/* card estreito: fica só o selo de Novo, para não encostar no prêmio máximo */
+@container (max-width: 250px) { .lb-badges b:not(.new) { display: none; } }
+.lb-card:hover, .lb-card:focus-visible { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 22px 40px rgba(0, 0, 0, .55), 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent), 0 0 40px color-mix(in srgb, var(--accent) 45%, transparent); outline: none; }
+.lb-art { position: absolute; inset: 0; z-index: -1; }
+.lb-bg { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.lb-card:hover .lb-bg { transform: scale(1.07); }
+/* cards com o rei: fundo desfocado e mais escuro, para o rei se destacar */
+.lb-card:has(.lb-king, .lb-astro) .lb-bg { filter: blur(.8px) brightness(.66) saturate(1.1); transform: scale(1.03); }
+.lb-card:has(.lb-king, .lb-astro):hover .lb-bg { transform: scale(1.1); }
+.lb-king {
+  position: absolute;
+  left: -12%;
+  bottom: -20%;
+  height: 100%;
+  width: auto;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .55));
+  transition: transform .4s cubic-bezier(.3, 1.4, .5, 1);
+}
+.lb-card:hover .lb-king { transform: translateY(-6px) scale(1.03); }
+/* Space Fest: o astronauta voando na diagonal */
+.lb-astro {
+  position: absolute;
+  left: 4%;
+  top: 24%;
+  width: 92%;
+  height: auto;
+  transform: rotate(-24deg);
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .55));
+  transition: transform .4s cubic-bezier(.3, 1.4, .5, 1);
+}
+.lb-card:hover .lb-astro { transform: rotate(-24deg) translate(10px, -8px); }
+/* Rei da Folia: pose de festa (outra imagem, enquadrada dos joelhos para cima) */
+.lb-king.party { left: 4%; bottom: -9%; height: 94%; }
+/* escurece embaixo para o título */
+.lb-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(8, 4, 20, .75) 70%, rgba(8, 4, 20, .96));
+  pointer-events: none;
+}
+.lb-badges { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.lb-badges b { padding: 4px 10px; border-radius: 999px; font: 800 11px var(--ui); letter-spacing: .06em; text-transform: uppercase; background: rgba(8, 4, 20, .7); border: 1px solid rgba(255, 255, 255, .25); backdrop-filter: blur(4px); }
+.lb-badges b.new { background: linear-gradient(180deg, #ff4d6d, #c4126a); border-color: transparent; }
+.lb-max {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 5px 11px;
+  border-radius: 10px;
+  font: 400 15px 'Luckiest Guy', var(--display);
+  letter-spacing: .04em;
+  color: #2a1500;
+  background: linear-gradient(180deg, #fff1b0, var(--gold));
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .4);
+}
+.lb-info { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 14px 20px; display: flex; justify-content: center; text-align: center; }
+.lb-info strong {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font: 400 clamp(24px, 2.3vw, 34px) / .95 'Luckiest Guy', var(--display);
+  letter-spacing: .03em;
+  color: var(--accent);
+  -webkit-text-stroke: 2.5px #1c0736;
+  paint-order: stroke fill;
+  text-shadow: 0 4px 0 #1c0736, 0 0 24px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.lb-play {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #ff6b9d, var(--pink) 50%, var(--pink-deep));
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, .85), 0 10px 26px rgba(0, 0, 0, .5);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.6);
+  transition: opacity .2s, transform .25s cubic-bezier(.3, 1.6, .5, 1);
+}
+.lb-play svg { width: 32px; height: 32px; margin-left: 4px; fill: #fff; }
+.lb-card:hover .lb-play, .lb-card:focus-visible .lb-play { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.theme-fortuna { --accent: #ffd34d; }
+.theme-folia { --accent: #ffc940; }
+.theme-coroa { --accent: #ffcf5a; }
+.theme-classico { --accent: #ff5468; }
+.theme-space { --accent: #dcc4ff; }
+.theme-poker { --accent: #3be3b6; }
+.theme-blackjack { --accent: #9ab6ff; }
+.theme-roleta { --accent: #ff6b7d; }
+.theme-bacbo { --accent: #8fb6ff; }
+.theme-paciencia { --accent: #6fe3a1; }
+
+.lb-empty { color: var(--muted); text-align: center; padding: 30px 0; }
+.lb-note { margin: 34px auto 0; max-width: 640px; text-align: center; font-size: 13px; line-height: 1.5; color: var(--muted); }
+
+/* ---------- Página inicial: categorias ---------- */
+.home-cats { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 14px; margin-top: 26px; }   /* todas as categorias numa linha */
+.home-cat {
+  --c: #ffc940;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  color: var(--text);
+  text-decoration: none;
+  background:
+    radial-gradient(circle at 18% 50%, color-mix(in srgb, var(--c) 22%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1.5px solid color-mix(in srgb, var(--c) 35%, var(--line));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .3);
+  transition: transform .2s cubic-bezier(.3, 1.4, .5, 1), border-color .2s, box-shadow .2s;
+}
+.home-cat:hover, .home-cat:focus-visible { transform: translateY(-3px); border-color: var(--c); box-shadow: 0 14px 30px rgba(0, 0, 0, .4), 0 0 24px color-mix(in srgb, var(--c) 35%, transparent); outline: none; }
+.home-cat svg { flex: none; width: 40px; height: 40px; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .4)); }
+.home-cat b { display: block; font: 400 19px var(--display); letter-spacing: .02em; color: var(--c); }
+.home-cat small { font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.cat-novidades { --c: #ffc940; }
+.cat-slots { --c: #ff6fa8; }
+.cat-mesa { --c: #3be3b6; }
+.cat-crash { --c: #c79bff; }
+.cat-cartas { --c: #6fe3a1; }
+.home-section { margin-top: 34px; scroll-margin-top: 96px; }
+.home-section .lb-head h2 svg { width: 28px; height: 28px; }
+.home-more { display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--line-2); color: var(--text); font: 700 14px var(--ui); text-decoration: none; transition: border-color .15s, color .15s; }
+.home-more:hover { border-color: var(--gold); color: var(--gold); }
+.home-more svg { width: 16px; height: 16px; }
+html { scroll-behavior: smooth; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 720px) {
+  .lb-hero { --king-out: 70px; grid-template-columns: 1fr; min-height: 400px; align-items: end; }
+  .lb-hero-clip { border-radius: 22px; }
+  .lb-hero-clip::after { background: linear-gradient(180deg, rgba(3, 20, 11, 0) 35%, rgba(3, 20, 11, .75) 70%, rgba(3, 20, 11, .95)); }
+  .lb-hero-bg { object-position: 50% 30%; }
+  .lb-hero-king { --cut: 22%; --keep: .78; left: 50%; margin-left: -34%; }
+  .lb-hero-text { grid-column: 1; padding: 0 16px 22px; gap: 14px; }
+  .hero-space { min-height: 340px; }
+  .hero-space { --king-out: 80px; }
+  .lb-hero-astro { left: 50%; width: min(78%, 320px); margin-left: max(-39%, -160px); top: -26px; }
+  .hero-space { grid-template-columns: 1fr; }
+  .lb-hero-mults { display: none; }
+  .hero-space .lb-hero-clip::after { background: linear-gradient(180deg, rgba(10, 4, 30, 0) 35%, rgba(10, 4, 30, .75) 70%, rgba(10, 4, 30, .95)); }
+  .lb-hero h1 { font-size: clamp(56px, 17vw, 76px); }
+  .lb-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .lb-card { border-radius: 16px; }
+  .lb-info { padding: 10px 8px 14px; }
+  .lb-info strong { font-size: clamp(20px, 6.2vw, 26px); }
+  .lb-badges { top: 8px; left: 8px; }
+  .lb-badges b { font-size: 9.5px; padding: 3px 7px; }
+  .lb-badges b:not(.new) { display: none; }
+  .lb-max { top: 8px; right: 8px; font-size: 12px; padding: 3px 8px; }
+  .lb-play { display: none; }
+  .lb-filters { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; width: 100%; }
+  .home-cats { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 20px; }
+  .home-cat:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .home-cat { padding: 10px 12px; gap: 10px; border-radius: 14px; }
+  .home-cat svg { width: 30px; height: 30px; }
+  .home-cat b { font-size: 16px; }
+  .home-section { margin-top: 26px; scroll-margin-top: 130px; }
+  .lb-filter { flex: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .home-cat { transition: none; }
+  .lb-card, .lb-bg, .lb-king, .lb-astro, .lb-play { transition: none; }
+  .lb-hero-astro { animation: none; transform: rotate(-20deg); }
+  .lb-hero-mults span { animation: none; }
+}

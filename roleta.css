@@ -1,0 +1,230 @@
+/* ==========================================================
+   Casino Fest — Roleta (usa a base de style.css)
+   ========================================================== */
+
+:root {
+  --rl-red: #d8243a;
+  --rl-black: #18161c;
+  --rl-green: #12a87c;
+}
+
+/* ---------- Mesa ---------- */
+.rl-table {
+  position: relative;
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: minmax(300px, 40%) 1fr;
+  align-items: center;
+  gap: 36px;
+  padding: 34px 38px;
+  border: 16px solid var(--rail-1);
+  border-radius: 40px;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(255, 255, 255, .08), transparent 55%),
+    radial-gradient(ellipse at 50% 45%, var(--felt-1) 0%, var(--felt-2) 60%, var(--felt-3) 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 201, 64, .35),
+    inset 0 0 90px rgba(0, 0, 0, .45),
+    0 0 0 2px #3e2550,
+    0 0 0 5px var(--rail-2),
+    0 0 0 7px rgba(255, 201, 64, .45),
+    0 40px 90px rgba(0, 0, 0, .55);
+}
+
+/* ---------- Roda ---------- */
+.rl-wheel-wrap {
+  position: relative;
+  width: 94%;
+  max-width: 520px;
+  justify-self: center;
+  aspect-ratio: 1;
+}
+/* roda 3D: ocupa o mesmo lugar da 2D, um pouco maior por causa da perspectiva */
+.rl-wheel3d { position: absolute; inset: -8% -8% -4%; pointer-events: none; }
+.rl-wheel3d canvas { display: block; width: 100% !important; height: 100% !important; }
+.rl-wheel-wrap:not(.is-3d) .rl-wheel3d { display: none; }
+.rl-wheel-wrap.is-3d .rl-wheel { visibility: hidden; }
+.rl-wheel svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 18px 26px rgba(0, 0, 0, .55)); }
+.rl-wheel .num-text { font: 800 10.5px var(--ui); fill: #fff; letter-spacing: -.02em; }
+.rl-result {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 27%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font: 400 clamp(26px, 4.4cqw, 44px) 'Luckiest Guy', var(--display);
+  color: #fff;
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, .35);
+  paint-order: stroke fill;
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 0 4px rgba(255, 201, 64, .25), 0 0 30px rgba(255, 201, 64, .6), 0 8px 18px rgba(0, 0, 0, .5);
+  animation: rl-pop .5s cubic-bezier(.3, 1.6, .5, 1);
+  z-index: 3;
+}
+.rl-result.red { background: radial-gradient(circle at 40% 30%, #ff5468, var(--rl-red)); }
+.rl-result.black { background: radial-gradient(circle at 40% 30%, #46424e, var(--rl-black)); }
+.rl-result.green { background: radial-gradient(circle at 40% 30%, #3cf0c0, var(--rl-green)); }
+@keyframes rl-pop { from { opacity: 0; transform: translate(-50%, -50%) scale(.3); } }
+
+/* faixa de resultado centralizada sobre o pano */
+.rl-board-wrap { position: relative; }
+.rl-banner-zone { position: absolute; inset: 0; z-index: 6; display: flex; align-items: center; justify-content: flex-start; pointer-events: none; }
+.rl-banner-zone .banner { position: relative; left: 50%; top: auto; bottom: auto; pointer-events: auto; }
+
+/* histórico embaixo da mesa: a mesa ganha a largura toda */
+.rl-layout { grid-template-columns: minmax(0, 1fr); }
+.rl-layout .log-wrap { position: static; width: min(1000px, 100%); justify-self: center; }
+.rl-layout .log { max-height: 260px; }
+
+/* ---------- Lado direito ---------- */
+.rl-side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
+.rl-history { display: flex; align-items: center; gap: 10px; min-height: 34px; }
+.rl-history-label {
+  font: 800 10.5px var(--ui);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .6);
+}
+.rl-history-list { display: flex; gap: 6px; overflow: hidden; flex: 1; }
+.hnum {
+  flex: none;
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  font: 800 12px var(--ui);
+  color: #fff;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .25), 0 2px 4px rgba(0, 0, 0, .35);
+}
+.hnum.red { background: var(--rl-red); }
+.hnum.black { background: var(--rl-black); }
+.hnum.green { background: var(--rl-green); }
+.hnum:first-child { width: 34px; height: 34px; font-size: 14px; box-shadow: 0 0 0 2px var(--gold), 0 0 12px rgba(255, 201, 64, .5); }
+.rl-history-empty { font-size: 12.5px; color: rgba(255, 255, 255, .5); }
+
+/* ---------- Pano de apostas ---------- */
+.rl-board {
+  display: grid;
+  grid-template-columns: .9fr repeat(12, 1fr) .95fr;
+  grid-template-rows: repeat(3, minmax(56px, 1fr)) 48px 54px;
+  border: 2px solid rgba(255, 201, 64, .7);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .12);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .3);
+  user-select: none;
+}
+.spot {
+  position: relative;
+  grid-row: var(--gr);
+  grid-column: var(--gc);
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 201, 64, .45);
+  color: #fff;
+  font: 800 15px var(--ui);
+  text-align: center;
+  cursor: pointer;
+  transition: filter .15s, box-shadow .15s, background .15s;
+}
+.spot.num { font-size: clamp(15px, 1.6cqw, 20px); }
+.spot.num.red { background: linear-gradient(180deg, #e83a50, var(--rl-red)); }
+.spot.num.black { background: linear-gradient(180deg, #34313b, var(--rl-black)); }
+.spot.num.green { background: linear-gradient(180deg, #2ad19f, var(--rl-green)); font-size: 22px; border-radius: 10px 0 0 10px; }
+.spot.out { background: rgba(0, 0, 0, .14); font-size: 14.5px; letter-spacing: .02em; }
+.spot.col { font-size: 14px; }
+.spot:hover, .spot.cover { box-shadow: inset 0 0 0 2px var(--gold); filter: brightness(1.18); }
+.spot.out:hover, .spot.out.cover { background: rgba(255, 201, 64, .14); }
+.board-locked .spot { cursor: default; }
+
+.diamond { display: inline-block; width: 20px; height: 20px; transform: rotate(45deg) scaleY(.8); border-radius: 3px; border: 1.5px solid rgba(255, 255, 255, .6); }
+.diamond.red { background: var(--rl-red); }
+.diamond.black { background: var(--rl-black); }
+
+/* número sorteado e apostas vencedoras */
+.spot.win { z-index: 2; box-shadow: inset 0 0 0 3px var(--gold), 0 0 22px rgba(255, 201, 64, .85); animation: rl-win 1s ease-in-out infinite; }
+@keyframes rl-win { 50% { filter: brightness(1.45); } }
+.spot.lost .spot-chip { opacity: .25; transform: translate(-50%, -50%) scale(.8); }
+.spot.won .spot-chip { filter: drop-shadow(0 0 8px var(--gold)); }
+
+/* ficha sobre a casa */
+.spot-chip {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 34px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity .4s, transform .4s;
+  animation: chip-drop .22s ease-out;
+}
+.spot-chip svg { display: block; width: 34px; height: 29px; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .5)); }
+.spot-chip b {
+  position: absolute;
+  left: 50%; top: 41%;
+  transform: translate(-50%, -50%);
+  font: 800 10.5px var(--ui);
+  color: #fff;
+  -webkit-text-stroke: 2.5px rgba(0, 0, 0, .55);
+  paint-order: stroke fill;
+  white-space: nowrap;
+}
+@keyframes chip-drop { from { transform: translate(-50%, -90%) scale(1.2); opacity: 0; } }
+
+.rl-limits { margin: 0; font-size: 13px; color: rgba(255, 255, 255, .55); text-align: center; }
+
+/* ---------- Controles ---------- */
+.tray-chip.selected { transform: translateY(-7px) scale(1.08); }
+.tray-chip.selected svg { filter: drop-shadow(0 0 7px var(--gold)) drop-shadow(0 5px 6px rgba(0, 0, 0, .45)); }
+.tray-chip.selected::after {
+  content: '';
+  position: absolute;
+  left: 50%; bottom: -9px;
+  width: 22px; height: 4px;
+  transform: translateX(-50%);
+  border-radius: 99px;
+  background: var(--gold);
+  box-shadow: 0 0 10px var(--gold);
+}
+.rl-row { display: grid; grid-template-columns: repeat(4, auto) 1fr; gap: 8px; }
+.rl-row .btn-ghost { justify-content: center; }
+.btn-ghost:disabled { opacity: .4; cursor: not-allowed; }
+.btn.deal {
+  background: linear-gradient(180deg, #ff6b9d, var(--pink) 50%, var(--pink-deep));
+  --btn-edge: #7d0a42;
+  font: 400 19px var(--display);
+  letter-spacing: .04em;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .rl-table { grid-template-columns: 1fr; padding: 20px; }
+  .rl-wheel-wrap { max-width: 320px; }
+}
+
+@media (max-width: 720px) {
+  .rl-table { border-width: 10px; border-radius: 28px; padding: 14px 10px; gap: 14px; }
+  .rl-wheel-wrap { max-width: 250px; }
+  /* pano na vertical, como nos apps de cassino */
+  .rl-board {
+    grid-template-columns: .8fr 1fr 1fr 1fr .9fr;
+    grid-template-rows: 42px repeat(12, 34px) 36px;
+  }
+  .spot { grid-row: var(--mr); grid-column: var(--mc); font-size: 12px; }
+  .spot.num { font-size: 14px; }
+  .spot.num.green { border-radius: 10px 10px 0 0; }
+  .spot.vert span { writing-mode: vertical-rl; transform: rotate(180deg); }
+  .diamond { width: 16px; height: 16px; }
+  .spot-chip, .spot-chip svg { width: 30px; }
+  .spot-chip svg { height: 26px; }
+  .rl-row { grid-template-columns: repeat(4, 1fr); }
+  .rl-row .btn.deal { grid-column: 1 / -1; }
+  .rl-row .btn-ghost { padding: 8px 6px; }
+  .tb-stats .last-stat { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spot.win, .rl-result, .spot-chip { animation: none; }
+}

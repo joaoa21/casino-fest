@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0817">
+  <title>Casino Fest | Rei da Fortuna</title>
+  <meta name="description" content="Slot 3×3 com 5 linhas e o bônus da Fortuna, que aparece de surpresa. Até 2.500x.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Casino Fest">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Rei da Fortuna · Casino Fest">
+  <meta property="og:description" content="Slot 3×3 com 5 linhas e o bônus da Fortuna, que aparece de surpresa. Até 2.500x.">
+  <meta property="og:url" content="https://joaoa21.github.io/casino-fest/fortuna.html">
+  <meta property="og:image" content="https://joaoa21.github.io/casino-fest/lobby/fortuna.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://joaoa21.github.io/casino-fest/fortuna.html">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="slots.css">
+  <link rel="stylesheet" href="fortuna.css">
+  <link rel="preload" as="image" href="folia/rei.webp">
+</head>
+<body data-game="slots" class="rf-page">
+
+  <!-- Cabeçalho do cassino (montado pelo casino.js) -->
+  <header class="site-header"></header>
+  <script src="casino.js"></script>
+
+  <div class="app">
+
+    <!-- ============ Barra do jogo ============ -->
+    <section class="table-bar" aria-label="Informações do jogo">
+      <div class="tb-title">
+        <h1>Rei da Fortuna</h1>
+        <span class="tb-sub">Slots · 3×3 · 5 linhas · bônus da Fortuna · <b class="tb-promo">até 2.500x</b></span>
+      </div>
+      <div class="tb-stats">
+        <div class="stat"><span class="stat-label">Giros</span><b id="info-spins">0</b></div>
+        <div class="stat"><span class="stat-label">Maior prêmio</span><b id="info-best">$0</b></div>
+        <div class="stat"><span class="stat-label">Resultado</span><b id="info-net">$0</b></div>
+      </div>
+    </section>
+
+    <!-- escolha da máquina -->
+    <nav class="sl-picker" aria-label="Escolha a máquina">
+      <a class="sl-pick sl-pick-all" href="slots.html"><svg><use href="#i-slots"/></svg><span><b>Todos</b><small>os slots</small></span></a>
+      <a class="sl-pick" href="maquinas.html?m=coroa"><svg><use href="#crown"/></svg><span><b>Coroa da Sorte</b><small>5 rolos · bônus</small></span></a>
+      <a class="sl-pick" href="maquinas.html?m=classico"><svg viewBox="0 0 100 100"><text x="50" y="86" text-anchor="middle" font-family="'Luckiest Guy', sans-serif" font-size="92" fill="#e3203f" stroke="#3d0f68" stroke-width="7" paint-order="stroke">7</text></svg><span><b>Sete Clássico</b><small>3 rolos · roda</small></span></a>
+      <a class="sl-pick" href="folia.html"><img src="folia/scatter.webp" alt=""><span><b>Rei da Folia</b><small>6×5 · multiplicadores</small></span></a>
+      <a class="sl-pick active" href="fortuna.html" aria-current="page"><img src="fortuna/coin.webp" alt=""><span><b>Rei da Fortuna</b><small>3×3 · bônus da Fortuna</small></span></a>
+    </nav>
+
+    <div class="layout">
+      <main class="play">
+        <section class="rf-stage" id="stage" aria-label="Rei da Fortuna">
+          <!-- o rei, por trás da máquina -->
+          <div class="rf-top">
+            <div class="rf-king" id="king"></div>
+            <div class="rf-sign"><b>Rei da</b><strong>Fortuna</strong></div>
+          </div>
+
+          <!-- a máquina -->
+          <div class="rf-frame">
+            <div class="rf-reels" id="reels"></div>
+            <svg class="rf-lines" id="lines" viewBox="0 0 300 300" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div class="rf-feature-tag" id="feature-tag" hidden><img id="feature-sym" src="fortuna/chip.webp" alt=""><span>Bônus da Fortuna</span></div>
+          </div>
+
+          <div class="rf-winbar" aria-live="polite">
+            <span id="win-label">Boa sorte!</span>
+            <b id="win-amount"></b>
+          </div>
+
+          <!-- raios e efeitos -->
+          <svg class="rf-fx" id="fx" aria-hidden="true"></svg>
+
+          <!-- avisos grandes -->
+          <div class="rf-overlay" id="overlay" hidden>
+            <span class="banner-rays" aria-hidden="true"></span>
+            <small id="ov-kicker"></small>
+            <strong id="ov-title"></strong>
+            <img id="ov-img" alt="" hidden>
+            <b id="ov-amount"></b>
+            <em id="ov-hint">Toque para continuar</em>
+          </div>
+        </section>
+
+        <section class="controls rf-controls" id="controls">
+          <div class="status" id="status" aria-live="polite"></div>
+          <div class="dock">
+            <div class="sl-row">
+              <div class="sl-bet" aria-label="Aposta por giro">
+                <button type="button" class="sl-step" id="bet-minus" aria-label="Diminuir aposta">−</button>
+                <div class="sl-bet-value"><span>Aposta</span><b id="bet-value">$5</b></div>
+                <button type="button" class="sl-step" id="bet-plus" aria-label="Aumentar aposta">+</button>
+              </div>
+              <button type="button" class="btn-ghost sl-toggle" id="btn-auto" aria-pressed="false" aria-haspopup="dialog" aria-expanded="false">Auto</button>
+              <button type="button" class="btn-ghost sl-toggle" id="btn-turbo" aria-pressed="false">Turbo</button>
+              <button type="button" class="btn deal sl-spin" id="btn-spin"><span id="spin-label">Girar</span> <kbd>Espaço</kbd></button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="sl-side">
+        <section class="sl-pays" aria-labelledby="pays-title">
+          <h2 id="pays-title"><svg><use href="#i-slots"/></svg>Quanto paga <span id="pays-bet">aposta $5</span></h2>
+          <div class="rf-lines-mini" aria-label="As 5 linhas" id="lines-mini"></div>
+          <div class="sl-pays-list" id="pays"></div>
+        </section>
+        <section class="log-wrap">
+          <h2><svg><use href="#i-history"/></svg>Histórico</h2>
+          <ul id="log" class="log"></ul>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <script src="fortuna-math.js"></script>
+  <script src="rei.js"></script>
+  <script src="fortuna.js"></script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+/* ==========================================================
+   Casino Fest — Blackjack (usa a base de style.css)
+   ========================================================== */
+
+.ring-dealer { --a1: #ff7ab3; }
+
+/* ---------- Mesa em meia-lua ---------- */
+.bj-table {
+  --bj-1: #1f78b4;
+  --bj-2: #11497f;
+  --bj-3: #08264a;
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, max(680px, calc((100vh - 400px) * 1.7)));
+  margin: 0 auto;
+  aspect-ratio: 16 / 9.4;
+  border: 18px solid var(--rail-1);
+  border-radius: 46px 46px 50% 50% / 46px 46px 72% 72%;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, .1), transparent 55%),
+    radial-gradient(ellipse at 50% 35%, var(--bj-1) 0%, var(--bj-2) 55%, var(--bj-3) 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 201, 64, .35),
+    inset 0 0 100px rgba(0, 0, 0, .5),
+    0 0 0 2px #3e2550,
+    0 0 0 5px var(--rail-2),
+    0 0 0 7px rgba(255, 201, 64, .45),
+    0 40px 90px rgba(0, 0, 0, .6),
+    0 0 120px rgba(31, 120, 180, .22);
+  --cw: clamp(44px, 9.6cqw, 100px);
+}
+.bj-table::after {
+  /* linha dourada interna */
+  content: '';
+  position: absolute;
+  inset: 3.5%;
+  border-radius: 32px 32px 50% 50% / 32px 32px 72% 72%;
+  border: 2px solid rgba(255, 255, 255, .08);
+  pointer-events: none;
+}
+
+/* logo do cassino estampada no feltro: discreta e estática */
+.felt-logo {
+  position: absolute;
+  left: 50%; top: 47%;
+  width: 26cqw;
+  transform: translate(-50%, -50%) rotate(-4deg);
+  opacity: .16;
+  filter: grayscale(.4) brightness(1.4);
+  pointer-events: none;
+}
+.felt-logo svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* ---------- Sapato e descarte ---------- */
+.bj-shoe {
+  position: absolute;
+  top: 6%; right: 6%;
+  width: calc(var(--cw) * 1.25);
+  height: calc(var(--cw) * 1.05);
+  border-radius: 12px 12px 10px 22px;
+  background: linear-gradient(160deg, #3b2470, #1c1038);
+  border: 2px solid rgba(255, 201, 64, .55);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .15);
+  transform: rotate(-8deg);
+  z-index: 2;
+}
+.bj-shoe { --sw: var(--cw); }
+.shoe-cards { position: absolute; left: 14%; top: -22%; --cw: calc(var(--sw) * .62); }
+.shoe-cards .card { position: absolute; left: 0; top: 0; transform: rotate(-58deg); box-shadow: 0 2px 4px rgba(0, 0, 0, .4); }
+.shoe-cards .card + .card { left: 4px; top: 3px; }
+.shoe-count {
+  position: absolute;
+  right: -10px; bottom: -10px;
+  min-width: 34px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #2a1500;
+  font: 800 11px var(--ui);
+  text-align: center;
+  box-shadow: 0 2px 0 #8a4b00;
+  transform: rotate(8deg);
+}
+
+.bj-discard {
+  position: absolute;
+  top: 7%; left: 7%;
+  width: var(--cw);
+  aspect-ratio: 5 / 7;
+}
+.bj-discard .card { position: absolute; inset: 0; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, .35); }
+
+/* ---------- Dealer ---------- */
+.bj-dealer {
+  position: absolute;
+  top: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.dealer-plate { min-width: 0; padding-right: 18px; }
+.dealer-plate .tag { color: var(--gold-2); }
+
+/* ---------- Cartas na mesa ---------- */
+.bj-hand { position: relative; display: flex; align-items: center; gap: 10px; min-height: calc(var(--cw) * 1.4); }
+.bj-cards { display: flex; align-items: flex-start; min-width: var(--cw); }
+.bj-cards .card + .card { margin-left: calc(var(--cw) * -.5); }
+.bj-cards .card:nth-child(n + 2) { margin-top: calc(var(--cw) * .04); }
+.bj-cards .card.bj-in { animation: bj-deal .42s cubic-bezier(.2, .8, .3, 1) backwards; animation-delay: var(--d, 0ms); }
+.bj-cards .card.bj-flip { animation: flip .38s ease-out backwards; animation-delay: var(--d, 0ms); }
+@keyframes bj-deal {
+  0% { opacity: 0; transform: translate(var(--fx, 0), var(--fy, -60px)) rotate(-24deg) scale(.7); }
+  12% { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+
+.bj-total {
+  min-width: 52px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  text-align: center;
+  font: 800 clamp(19px, 2.9cqw, 26px)/1.1 var(--ui);
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  background: rgba(10, 6, 30, .75);
+  border: 1.5px solid rgba(255, 255, 255, .25);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .35);
+  white-space: nowrap;
+}
+.bj-total.is-21 { color: #2a1500; box-shadow: 0 0 18px rgba(255, 201, 64, .6); background: linear-gradient(180deg, var(--gold-2), var(--gold)); border-color: var(--gold); }
+.bj-total.is-bust { color: #fff; background: linear-gradient(180deg, #ff6b7b, #c81e3a); border-color: #ff8f9c; }
+
+/* ---------- Mãos do jogador ---------- */
+.bj-hands {
+  position: absolute;
+  left: 4%; right: 4%;
+  bottom: 6%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 3.5%;
+}
+.bj-hands.many { --cw: clamp(36px, 7.2cqw, 76px); }
+.hand {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  transition: opacity .3s, transform .3s;
+}
+.hand .bj-hand { flex-direction: column-reverse; gap: 7px; }
+.hand.waiting { opacity: .5; }
+.hand.active .bj-cards { filter: drop-shadow(0 0 14px rgba(255, 201, 64, .55)); }
+.hand.active .bj-total { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255, 201, 64, .25), 0 4px 10px rgba(0, 0, 0, .35); }
+.hand.active::after {
+  content: '';
+  position: absolute;
+  left: 50%; bottom: -10px;
+  width: 30px; height: 4px;
+  border-radius: 99px;
+  transform: translateX(-50%);
+  background: var(--gold);
+  box-shadow: 0 0 12px var(--gold);
+}
+.hand-bet { display: flex; align-items: flex-end; gap: 6px; }
+.hand-bet .chips { --chip: 22px; }
+.hand-bet b {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .45);
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.hand-result {
+  position: absolute;
+  left: 50%; top: 34%;
+  transform: translate(-50%, -50%) rotate(-6deg);
+  padding: 4px 12px;
+  border-radius: 10px;
+  font: 400 clamp(14px, 2.2cqw, 19px) 'Luckiest Guy', var(--display);
+  letter-spacing: .04em;
+  white-space: nowrap;
+  color: #fff;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, .35);
+  paint-order: stroke fill;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .4);
+  animation: pop-in .4s cubic-bezier(.3, 1.6, .5, 1) backwards;
+  animation-delay: var(--d, 0ms);
+  z-index: 3;
+}
+.hand-result.r-win  { background: linear-gradient(180deg, #3cf0c0, #12a87c); }
+.hand-result.r-bj   { background: linear-gradient(180deg, var(--gold-2), var(--gold-deep)); color: #3a1d00; -webkit-text-stroke: 0; }
+.hand-result.r-push { background: linear-gradient(180deg, #6b6290, #3a2f62); }
+.hand-result.r-lose,
+.hand-result.r-bust { background: linear-gradient(180deg, #ff6b7b, #c81e3a); }
+@keyframes pop-in { from { opacity: 0; transform: translate(-50%, -50%) rotate(-6deg) scale(.4); } }
+
+/* ---------- Círculo de aposta ---------- */
+.bet-spot {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  width: calc(var(--cw) * 1.55);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 3px solid rgba(255, 201, 64, .7);
+  box-shadow: 0 0 0 6px rgba(255, 201, 64, .12), inset 0 0 0 6px rgba(255, 255, 255, .06), inset 0 0 30px rgba(0, 0, 0, .25);
+  background: radial-gradient(circle, rgba(255, 255, 255, .06), transparent 70%);
+  transition: box-shadow .25s;
+}
+.bet-spot.pulse { box-shadow: 0 0 0 8px rgba(255, 201, 64, .22), 0 0 30px rgba(255, 201, 64, .4), inset 0 0 0 6px rgba(255, 255, 255, .06); }
+.bet-spot-chips { display: flex; gap: 3px; align-items: flex-end; --chip: calc(var(--cw) * .32); }
+.bet-spot-chips:empty { display: none; }
+.bet-spot-label {
+  font: 800 11px var(--ui);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .6);
+  text-align: center;
+}
+.bet-spot.has-bet .bet-spot-label {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .5);
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* faixa de resultado no meio do feltro */
+.bj-table .banner { top: 39%; bottom: auto; }
+
+/* ---------- Painéis de controle ---------- */
+.bj-panel { display: flex; flex-direction: column; gap: 12px; }
+.bj-panel.actions { display: grid; }
+.bj-panel[hidden] { display: none; }
+
+.bet-row { display: grid; grid-template-columns: auto auto auto 1fr; gap: 8px; }
+.bet-row .btn-ghost { justify-content: center; min-width: 56px; }
+.btn.deal {
+  background: linear-gradient(180deg, #ff6b9d, var(--pink) 50%, var(--pink-deep));
+  --btn-edge: #7d0a42;
+  font: 400 19px var(--display);
+  letter-spacing: .04em;
+}
+
+.bj-actions { grid-template-columns: repeat(4, 1fr); }
+.bj-two { grid-template-columns: 1fr 1.3fr; }
+.bj-three { grid-template-columns: 1fr 1.1fr 1.5fr; }
+.btn.hit    { background: linear-gradient(180deg, #2ee0b0, #12a87c); --btn-edge: #0a6a4f; color: #04261c; }
+.btn.stand  { background: linear-gradient(180deg, var(--gold-2), var(--gold) 50%, var(--gold-deep)); --btn-edge: #9a5a00; color: #2a1500; }
+.btn.double { background: linear-gradient(180deg, #a98bff, #6a3df0); --btn-edge: #3b1fa0; }
+.btn.split  { background: linear-gradient(180deg, #ff6b9d, #d81b6a); --btn-edge: #7d0a42; }
+.btn.hit kbd, .btn.stand kbd { background: rgba(0, 0, 0, .12); }
+.ins-text { margin: 0; text-align: center; font-weight: 600; color: var(--text); }
+.ins-text b { color: var(--gold); }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 720px) {
+  .bj-table {
+    width: 100%;
+    aspect-ratio: 3 / 4.1;
+    border-width: 11px;
+    border-radius: 34px 34px 50% 50% / 34px 34px 40% 40%;
+    --cw: clamp(40px, 15cqw, 66px);
+  }
+  .bj-table::after { border-radius: 26px 26px 50% 50% / 26px 26px 40% 40%; inset: 3%; }
+  .felt-logo { width: 46cqw; top: 46%; }
+  .bj-shoe { top: 4%; right: 5%; width: calc(var(--cw) * 1.05); height: calc(var(--cw) * .9); }
+  .bj-discard { top: 5%; left: 5%; width: calc(var(--cw) * .8); }
+  .bj-dealer { top: 3%; gap: 8px; }
+  .bj-hands { bottom: 5%; left: 2%; right: 2%; }
+  .bj-hands.many { --cw: clamp(32px, 10cqw, 50px); }
+  .bj-table .banner { top: 40%; }
+  .bet-row { grid-template-columns: repeat(3, 1fr); }
+  .bet-row .btn.deal { grid-column: 1 / -1; }
+  .bj-actions { grid-template-columns: repeat(2, 1fr); }
+  .bj-three { grid-template-columns: 1fr 1fr; }
+  .bj-three .btn.next { grid-column: 1 / -1; order: -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bj-cards .card.bj-in, .bj-cards .card.bj-flip, .hand-result { animation: none; }
+}
